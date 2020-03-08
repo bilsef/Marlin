@@ -27,7 +27,13 @@
   #define DUMMY_THERMISTOR_999_VALUE 25
 #endif
 
+//const short temptable_999[][2] PROGMEM = {
+//  { OV(   1), DUMMY_THERMISTOR_999_VALUE },
+//  { OV(1023), DUMMY_THERMISTOR_999_VALUE }
+//};
+
 const short temptable_999[][2] PROGMEM = {
-  { OV(   1), DUMMY_THERMISTOR_999_VALUE },
-  { OV(1023), DUMMY_THERMISTOR_999_VALUE }
+  { OV(   1), 115 },
+  { OV(1020), 25 },
+  { OV(1023), 25 }
 };

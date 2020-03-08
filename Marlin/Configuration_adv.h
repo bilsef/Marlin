@@ -128,7 +128,7 @@
 #if DISABLED(PIDTEMPBED)
   #define BED_CHECK_INTERVAL 5000 // ms between checks in bang-bang control
   #if ENABLED(BED_LIMIT_SWITCHING)
-    #define BED_HYSTERESIS 2 // Only disable heating if T>target+BED_HYSTERESIS and enable heating if T>target-BED_HYSTERESIS
+    #define BED_HYSTERESIS 5 // Only disable heating if T>target+BED_HYSTERESIS and enable heating if T>target-BED_HYSTERESIS
   #endif
 #endif
 
@@ -271,7 +271,7 @@
  * Also, if the temperature is set to a value below mintemp, it will not be changed by autotemp.
  * On an Ultimaker, some initial testing worked with M109 S215 B260 F1 in the start.gcode
  */
-#define AUTOTEMP
+//#define AUTOTEMP
 #if ENABLED(AUTOTEMP)
   #define AUTOTEMP_OLDWEIGHT 0.98
 #endif
@@ -281,7 +281,7 @@
 
 // Show Temperature ADC value
 // Enable for M105 to include ADC values read from temperature sensors.
-//#define SHOW_TEMP_ADC_VALUES
+#define SHOW_TEMP_ADC_VALUES
 
 /**
  * High Temperature Thermistor Support
@@ -582,12 +582,12 @@
 // @section homing
 
 // Homing hits each endstop, retracts by these distances, then does a slower bump.
-#define X_HOME_BUMP_MM 5
-#define Y_HOME_BUMP_MM 5
-#define Z_HOME_BUMP_MM 2
-#define HOMING_BUMP_DIVISOR { 2, 2, 4 }  // Re-Bump Speed Divisor (Divides the Homing Feedrate)
-//#define QUICK_HOME                     // If homing includes X and Y, do a diagonal move initially
-//#define HOMING_BACKOFF_MM { 2, 2, 2 }  // (mm) Move away from the endstops after homing
+#define X_HOME_BUMP_MM 10
+#define Y_HOME_BUMP_MM 10
+#define Z_HOME_BUMP_MM 0
+#define HOMING_BUMP_DIVISOR { 4, 4, 4 }  // Re-Bump Speed Divisor (Divides the Homing Feedrate)
+#define QUICK_HOME                     // If homing includes X and Y, do a diagonal move initially
+#define HOMING_BACKOFF_MM { 2, 2, 0 }  // (mm) Move away from the endstops after homing
 
 // When G28 is called, this option will make Y home before X
 //#define HOME_Y_BEFORE_X
@@ -726,15 +726,15 @@
 //#define MULTI_NOZZLE_DUPLICATION
 
 // By default pololu step drivers require an active high signal. However, some high power drivers require an active low signal as step.
-#define INVERT_X_STEP_PIN false
-#define INVERT_Y_STEP_PIN false
+#define INVERT_X_STEP_PIN true
+#define INVERT_Y_STEP_PIN true
 #define INVERT_Z_STEP_PIN false
 #define INVERT_E_STEP_PIN false
 
 // Default stepper release if idle. Set to 0 to deactivate.
 // Steppers will shut down DEFAULT_STEPPER_DEACTIVE_TIME seconds after the last move when DISABLE_INACTIVE_? is true.
 // Time can be set by M18 and M84.
-#define DEFAULT_STEPPER_DEACTIVE_TIME 120
+#define DEFAULT_STEPPER_DEACTIVE_TIME 0
 #define DISABLE_INACTIVE_X true
 #define DISABLE_INACTIVE_Y true
 #define DISABLE_INACTIVE_Z true  // Set to false if the nozzle will fall down on your printed part when print has finished.
@@ -749,7 +749,7 @@
 #define DEFAULT_MINSEGMENTTIME        20000   // (ms)
 
 // If defined the movements slow down when the look ahead buffer is only half full
-#define SLOWDOWN
+//#define SLOWDOWN
 
 // Frequency limit
 // See nophead's blog for more info
@@ -765,23 +765,23 @@
 // Backlash Compensation
 // Adds extra movement to axes on direction-changes to account for backlash.
 //
-//#define BACKLASH_COMPENSATION
+#define BACKLASH_COMPENSATION
 #if ENABLED(BACKLASH_COMPENSATION)
   // Define values for backlash distance and correction.
   // If BACKLASH_GCODE is enabled these values are the defaults.
-  #define BACKLASH_DISTANCE_MM { 0, 0, 0 } // (mm)
-  #define BACKLASH_CORRECTION    0.0       // 0.0 = no correction; 1.0 = full correction
+  #define BACKLASH_DISTANCE_MM { 0.5, 0.5, 0 } // (mm)
+  #define BACKLASH_CORRECTION    1.0       // 0.0 = no correction; 1.0 = full correction
 
   // Set BACKLASH_SMOOTHING_MM to spread backlash correction over multiple segments
   // to reduce print artifacts. (Enabling this is costly in memory and computation!)
   //#define BACKLASH_SMOOTHING_MM 3 // (mm)
 
   // Add runtime configuration and tuning of backlash values (M425)
-  //#define BACKLASH_GCODE
+  #define BACKLASH_GCODE
 
   #if ENABLED(BACKLASH_GCODE)
     // Measure the Z backlash when probing (G29) and set with "M425 Z"
-    #define MEASURE_BACKLASH_WHEN_PROBING
+    //#define MEASURE_BACKLASH_WHEN_PROBING
 
     #if ENABLED(MEASURE_BACKLASH_WHEN_PROBING)
       // When measuring, the probe will move up to BACKLASH_MEASUREMENT_LIMIT
@@ -1605,7 +1605,7 @@
 //
 // G2/G3 Arc Support
 //
-#define ARC_SUPPORT                 // Disable this feature to save ~3226 bytes
+//#define ARC_SUPPORT                 // Disable this feature to save ~3226 bytes
 #if ENABLED(ARC_SUPPORT)
   #define MM_PER_ARC_SEGMENT      1 // (mm) Length (or minimum length) of each arc segment
   //#define ARC_SEGMENTS_PER_R    1 // Max segment length, MM_PER = Min
@@ -2750,7 +2750,7 @@
 /**
  * Disable all Volumetric extrusion options
  */
-//#define NO_VOLUMETRICS
+#define NO_VOLUMETRICS
 
 #if DISABLED(NO_VOLUMETRICS)
   /**
