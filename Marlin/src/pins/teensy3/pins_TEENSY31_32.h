@@ -116,8 +116,8 @@ plan for Teensy3.2:
 // Temperature Sensors
 //
 #define TEMP_0_PIN         6    // Analog Input - A6 -> Left Vacuum
-#define TEMP_1_PIN         9    // Analog Input - A5 -> Right Vacuum
-#define TEMP_BED_PIN       5    // Analog Input - A9 -> Pump Vacuum
+#define TEMP_1_PIN         5    // Analog Input - A5 -> Right Vacuum
+#define TEMP_BED_PIN       9    // Analog Input - A9 -> Pump Vacuum
 
 //#ifndef FILWIDTH_PIN
 //  #define FILWIDTH_PIN      6   // Analog Input
