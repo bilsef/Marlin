@@ -67,7 +67,7 @@ plan for Teensy3.2:
   #define BOARD_INFO_NAME "Teensy3.2"
 #endif
 
-#define AT90USB 1286   // Disable MarlinSerial etc.
+#define AT90USB                              1286 // Disable MarlinSerial etc.
 #define USBCON //1286  // Disable MarlinSerial etc.
 
 //
@@ -127,8 +127,8 @@ plan for Teensy3.2:
 // Misc. Functions
 //
 
-//#define SDSS               16   // 8
-#define LED_PIN            13
+//#define SDSS                                16  // 8
+#define LED_PIN                               13
 
 #define SOL0_PIN           17
 #define SOL1_PIN           18
@@ -140,20 +140,20 @@ plan for Teensy3.2:
 // LCD / Controller
 //
 
-//#define SCK_PIN            13
-//#define MISO_PIN           12
-//#define MOSI_PIN           11
+//#define SCK_PIN                             13
+//#define MISO_PIN                            12
+//#define MOSI_PIN                            11
 
 /*
 #if HAS_SPI_LCD
-  #define LCD_PINS_RS      40
-  #define LCD_PINS_ENABLE  41
-  #define LCD_PINS_D4      42
-  #define LCD_PINS_D5      43
-  #define LCD_PINS_D6      44
-  #define LCD_PINS_D7      45
-  #define BTN_EN1          46
-  #define BTN_EN2          47
-  #define BTN_ENC          48
+  #define LCD_PINS_RS                         40
+  #define LCD_PINS_ENABLE                     41
+  #define LCD_PINS_D4                         42
+  #define LCD_PINS_D5                         43
+  #define LCD_PINS_D6                         44
+  #define LCD_PINS_D7                         45
+  #define BTN_EN1                             46
+  #define BTN_EN2                             47
+  #define BTN_ENC                             48
 #endif
 */
