@@ -178,6 +178,9 @@
 #if ANY_THERMISTOR_IS(1000) // Custom
   const short temptable_1000[][2] PROGMEM = { { 0, 0 } };
 #endif
+#if ANY_THERMISTOR_IS(1001) // User-defined vacuum sensor
+  #include "thermistor_1001.h"
+#endif
 
 #define _TT_NAME(_N) temptable_ ## _N
 #define TT_NAME(_N) _TT_NAME(_N)

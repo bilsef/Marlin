@@ -32,7 +32,7 @@
 //  { OV(1023), DUMMY_THERMISTOR_999_VALUE }
 //};
 
-const short temptable_999[][2] PROGMEM = {
+const short temptable_1001[][2] PROGMEM = {
   { OV(   1), 150 },
   { OV(1020), 15 },
   { OV(1023), 15 }
