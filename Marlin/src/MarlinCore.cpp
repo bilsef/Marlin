@@ -1011,6 +1011,11 @@ void setup() {
 
   stepper.init();           // Init stepper. This enables interrupts!
 
+ // initialize Teensy DAC pin
+  pinMode(40, OUTPUT);
+  extDigitalWrite(40, 0);
+  analogWrite(40, 0);
+
   #if HAS_SERVOS
     servo_init();
   #endif

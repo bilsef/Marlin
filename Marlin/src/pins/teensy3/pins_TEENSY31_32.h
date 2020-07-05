@@ -106,7 +106,7 @@ plan for Teensy3.2:
 #define HEATER_0_PIN       29  // Not used
 #define HEATER_1_PIN       30  // Not used
 #define HEATER_BED_PIN     21  // Vacuum pump
-#define HEATER_BED_INVERTING true
+#define HEATER_BED_INVERTING false
 
 #ifndef FAN_PIN
   #define FAN_PIN          28  // Not used
@@ -134,6 +134,7 @@ plan for Teensy3.2:
 #define SOL1_PIN           18
 
 //#define SERVO_PIN          32  // DAC pin A14 -> LED Light
+
 
 //
 // LCD / Controller
