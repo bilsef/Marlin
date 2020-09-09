@@ -72,7 +72,7 @@ typedef struct { int16_t value, celsius; } temp_entry_t;
 #if ANY_THERMISTOR_IS(501) // 100K Zonestar thermistor
   #include "thermistor_501.h"
 #endif
-#if ANY_THERMISTOR_IS(502) // Unknown thermistor used by the Zonestar Průša P802M hot bed
+#if ANY_THERMISTOR_IS(502) // Unknown thermistor used by the Zonestar Prusa P802M hot bed
   #include "thermistor_502.h"
 #endif
 #if ANY_THERMISTOR_IS(512) // 100k thermistor in RPW-Ultra hotend, Pull-up = 4.7 kOhm, "unknown model"
@@ -179,6 +179,9 @@ typedef struct { int16_t value, celsius; } temp_entry_t;
 #endif
 #if ANY_THERMISTOR_IS(1047) // Pt1000 with 4k7 pullup
   #include "thermistor_1047.h"
+#endif
+#if ANY_THERMISTOR_IS(997) // User-defined table 1
+  #include "thermistor_997.h"
 #endif
 #if ANY_THERMISTOR_IS(998) // User-defined table 1
   #include "thermistor_998.h"
