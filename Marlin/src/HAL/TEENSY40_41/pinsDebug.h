@@ -18,7 +18,7 @@
  */
 #pragma once
 
-#pragma message "PINS_DEBUGGING is not fully supported for Teensy 4.0 / 4.1.  M43 may cause watchdog timeouts."
+//#pragma message "PINS_DEBUGGING is not fully supported for Teensy 4.0 / 4.1.  M43 may cause watchdog timeouts."
 
 #define NUMBER_PINS_TOTAL NUM_DIGITAL_PINS
 
@@ -120,8 +120,9 @@ void HAL_print_analog_pin(char buffer[], int8_t pin) {
 }
 
 void HAL_analog_pin_state(char buffer[], int8_t pin) {
-  if (pin <= 23)      sprintf_P(buffer, PSTR("Analog in =% 5d"), analogRead(pin - 14));
-  else if (pin <= 41) sprintf_P(buffer, PSTR("Analog in =% 5d"), analogRead(pin - 24));
+  sprintf_P(buffer, PSTR("Unable to read analog pin"));	// analog read causes watchdog timeouts
+  //if (pin <= 23)      sprintf_P(buffer, PSTR("Analog in =% 5d"), analogRead(pin - 14));
+  //else if (pin <= 41) sprintf_P(buffer, PSTR("Analog in =% 5d"), analogRead(pin - 24));
 }
 
 #define PWM_PRINT(V) do{ sprintf_P(buffer, PSTR("PWM:  %4d"), V); SERIAL_ECHO(buffer); }while(0)

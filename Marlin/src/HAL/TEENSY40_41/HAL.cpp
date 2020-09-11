@@ -91,8 +91,6 @@ static const uint8_t pin2sc1a[] = {
 
 void HAL_adc_init() {
   analog_init();
-	while (ADC1_GC & ADC_GC_CAL) ;
-	while (ADC2_GC & ADC_GC_CAL) ;
 }
 
 void HAL_clear_reset_source() {
@@ -120,7 +118,7 @@ extern "C" {
   extern char __heap_start;
   extern void* __brkval;
 
-// doesn't wowrk on Teensy 4.x
+// doesn't work on Teensy 4.x
   uint32_t freeMemory() {
     uint32_t free_memory;
     if ((uint32_t)__brkval == 0)
@@ -150,10 +148,12 @@ void HAL_adc_start_conversion(const uint8_t adc_pin) {
 uint16_t HAL_adc_get_result() {
   switch (HAL_adc_select) {
     case 0: 
-		  while (!(ADC1_HS & ADC_HS_COCO0)) ; // wait
+		  while (!(ADC1_HS & ADC_HS_COCO0)) {
+		  }; // wait
       return ADC1_R0;
     case 1: 
-		  while (!(ADC2_HS & ADC_HS_COCO0)) ; // wait
+		  while (!(ADC2_HS & ADC_HS_COCO0)) {
+		  }; // wait
       return ADC2_R0;
   }
   return 0;
