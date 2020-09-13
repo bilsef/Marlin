@@ -27,7 +27,7 @@
 * https://www.pjrc.com/teensy/teensyduino.html
 ****************************************************************************************/
 
-#if !IS_32BIT_TEENSY || !IS_TEENSY41
+#if !IS_32BIT_TEENSY | !IS_TEENSY41
   #error "Oops! Select 'Teensy 4.1' in 'Tools > Board.'"
 #else
   #define BOARD_INFO_NAME "Teensy4.1"
@@ -69,74 +69,67 @@
  
 */
 
+// Ignore temp readings during development.
+#define BOGUS_TEMPERATURE_GRACE_PERIOD 10000
+
 //
 // Limit Switches
 //
-#define X_STOP_PIN                            39
+#define X_STOP_PIN                            41
 #define Y_STOP_PIN                            38
-#define Z_STOP_PIN                            24
-#define I_STOP_PIN                            38
-#define J_STOP_PIN                            24
+#define Z_STOP_PIN                            37
+
 //
 // Steppers
 //
 #define X_STEP_PIN                             4
 #define X_DIR_PIN                              3
 #define X_ENABLE_PIN                           6
-//#define X_CS_PIN                              30
+#define X_CS_PIN                               0
 
 #define Y_STEP_PIN                            24
 #define Y_DIR_PIN                             10
 #define Y_ENABLE_PIN                          23
-//#define Y_CS_PIN                              31
+#define Y_CS_PIN                               7
 
 #define Z_STEP_PIN                            30
 #define Z_DIR_PIN                             29
 #define Z_ENABLE_PIN                          22
-//#define Z_CS_PIN                              32
+#define Z_CS_PIN                              26
 
-#define I_STEP_PIN                             2
-#define I_DIR_PIN                              1
-#define I_ENABLE_PIN                           5
-#define I_CS_PIN                               0
+#define E0_STEP_PIN                            2
+#define E0_DIR_PIN                             1
+#define E0_ENABLE_PIN                          5
+//#define E0_CS_PIN                              0
 
-#define J_STEP_PIN                             9
-#define J_DIR_PIN                              8
-#define J_ENABLE_PIN                          25
-#define J_CS_PIN                               7
+#define E1_STEP_PIN                            9
+#define E1_DIR_PIN                             8
+#define E1_ENABLE_PIN                         25
+//#define E1_CS_PIN                              7
 
-#define E0_STEP_PIN                           28
-#define E0_DIR_PIN                            27
-#define E0_ENABLE_PIN                         31
+#define HEATER_0_PIN                          42
+#define HEATER_1_PIN                          43
+//#define HEATER_BED_PIN                        36
 
-#define E1_STEP_PIN                           28
-#define E1_DIR_PIN                            27
-#define E1_ENABLE_PIN                         31
+#define TEMP_0_PIN                             3  // Extruder / Analog pin numbering: 2 => A2
+#define TEMP_1_PIN                             2
+//#define TEMP_BED_PIN                           1  // Bed / Analog pin numbering
 
-#define HEATER_0_PIN                          37
-#define HEATER_1_PIN                          18
-#define HEATER_BED_PIN                        36
-#ifndef FAN_PIN
-  #define FAN_PIN                             29
-#endif
-
-#define TEMP_0_PIN                             2  // Extruder / Analog pin numbering: 2 => A2
-#define TEMP_1_PIN                             0
-#define TEMP_BED_PIN                           1  // Bed / Analog pin numbering
-
-#define LED_PIN                               13
+#define LED_PIN                               33
 //#define PS_ON_PIN                              1
 //#define ALARM_PIN                             -1
 
 //#define FILWIDTH_PIN                           6  // A6
-#define SOL0_PIN                              28
-#define SERVO0_PIN                            22
-#define SERVO1_PIN                            23
+//#define SOL0_PIN                              28
+#define SERVO0_PIN                            15
+#define SERVO1_PIN                            14
 
-//#define SCK_PIN                               13
-//#define MISO_PIN                              12
-//#define MOSI_PIN                              11
+#define SCK_PIN                               13
+#define MISO_PIN                              12
+#define MOSI_PIN                              11
 
 #ifndef SDCARD_CONNECTION
   #define SDCARD_CONNECTION              ONBOARD
 #endif
+
+#define SD_DETECT_PIN                         44

@@ -45,12 +45,12 @@ static SPISettings spiConfig;
 // ------------------------
 
 void spiBegin() {
-  #ifndef SS_PIN
-    #error "SS_PIN is not defined!"
+  #if !PIN_EXISTS(SS)
+    #error SS_PIN not defined!
   #endif
-
-  OUT_WRITE(SS_PIN, HIGH);
-
+  pinMode (SS_PIN, OUTPUT);
+  digitalWrite (SS_PIN, HIGH);
+  //OUT_WRITE(SS_PIN, HIGH);
   //SET_OUTPUT(SCK_PIN);
   //SET_INPUT(MISO_PIN);
   //SET_OUTPUT(MOSI_PIN);
