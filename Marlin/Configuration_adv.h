@@ -629,8 +629,8 @@
 
 //#define SENSORLESS_BACKOFF_MM  { 2, 2 }     // (mm) Backoff from endstops before sensorless homing
 
-#define HOMING_BUMP_MM      ARRAY_N(LINEAR_AXES, 5, 5, 2, 2, 2, 2)       // (mm) Backoff from endstops after first bump
-#define HOMING_BUMP_DIVISOR ARRAY_N(LINEAR_AXES, 2, 2, 4, 4, 4, 4)       // Re-Bump Speed Divisor (Divides the Homing Feedrate)
+#define HOMING_BUMP_MM      ARRAY_N(LINEAR_AXES, 5, 5, 5, 5, 5, 5)       // (mm) Backoff from endstops after first bump
+#define HOMING_BUMP_DIVISOR ARRAY_N(LINEAR_AXES, 2, 2, 2, 2, 2, 2)       // Re-Bump Speed Divisor (Divides the Homing Feedrate)
 //#define HOMING_BACKOFF_POST_MM ARRAY_N(LINEAR_AXES, 2, 2, 2, 2, 2, 2)  // (mm) Backoff from endstops after homing
 
 #define MOVE_AWAY_FIRST   // if in endstop, move away before homing
@@ -2324,7 +2324,7 @@
   #endif
 
   #if AXIS_IS_TMC(I)
-    #define I_CURRENT      800
+    #define I_CURRENT      400
     #define I_CURRENT_HOME I_CURRENT
     #define I_MICROSTEPS    16
     #define I_RSENSE         0.11
@@ -2332,7 +2332,7 @@
   #endif
 
   #if AXIS_IS_TMC(J)
-    #define J_CURRENT      800
+    #define J_CURRENT      400
     #define J_CURRENT_HOME J_CURRENT
     #define J_MICROSTEPS    16
     #define J_RSENSE         0.11
@@ -2340,7 +2340,7 @@
   #endif
 
   #if AXIS_IS_TMC(K)
-    #define K_CURRENT      800
+    #define K_CURRENT      400
     #define K_CURRENT_HOME K_CURRENT
     #define K_MICROSTEPS    16
     #define K_RSENSE         0.11

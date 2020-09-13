@@ -1692,6 +1692,30 @@ void homeaxis(const AxisEnum axis) {
           do_homing_move(axis, 5 * -axis_home_dir);
         }
         break;
+      #if LINEAR_AXES >= 4
+        case I_AXIS:
+          while (IN_ENDSTOP(I_HOME_DIR < 0 ? I_MIN : I_MAX)) {
+            if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPGM("Move out of home sensor.");
+            do_homing_move(axis, 5 * -axis_home_dir);
+          }
+          break;
+      #endif
+      #if LINEAR_AXES >= 5
+        case J_AXIS:
+          while (IN_ENDSTOP(J_HOME_DIR < 0 ? J_MIN : J_MAX)) {
+            if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPGM("Move out of home sensor.");
+            do_homing_move(axis, 5 * -axis_home_dir);
+          }
+          break;
+      #endif
+      #if LINEAR_AXES >= 6
+        case K_AXIS:
+          while (IN_ENDSTOP(K_HOME_DIR < 0 ? K_MIN : K_MAX)) {
+            if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPGM("Move out of home sensor.");
+            do_homing_move(axis, 5 * -axis_home_dir);
+          }
+          break;
+      #endif
       default:
         break;
     }
