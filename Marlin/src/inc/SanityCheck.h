@@ -59,6 +59,20 @@
 #undef TEST3
 #undef TEST4
 
+#if LINEAR_AXES == 3
+  #if EXTRUDERS == 1 && NUM_AXIS != LINEAR_AXES + EXTRUDERS
+    #error "LINEAR_AXES 3 plus EXTRUDERS 1 does not yield NUM_AXIS 4."
+  #elif EXTRUDERS == 0 && NUM_AXIS != LINEAR_AXES + EXTRUDERS
+    #error "LINEAR_AXES 3 plus EXTRUDERS 0 does not yield NUM_AXIS 3."
+  #endif
+#elif LINEAR_AXES == 4
+  #if EXTRUDERS == 1 && NUM_AXIS != LINEAR_AXES + EXTRUDERS
+    #error "LINEAR_AXES 4 plus EXTRUDERS 1 does not yield NUM_AXIS 5."
+  #elif EXTRUDERS == 0 && NUM_AXIS != LINEAR_AXES + EXTRUDERS
+    #error "LINEAR_AXES 4 plus EXTRUDERS 0 does not yield NUM_AXIS 4."
+  #endif
+#endif
+
 /**
  * We try our best to include sanity checks for all changed configuration
  * directives because users have a tendency to use outdated config files with
@@ -664,6 +678,12 @@ static_assert(Y_MAX_LENGTH >= Y_BED_SIZE, "Movement bounds (Y_MIN_POS, Y_MAX_POS
   #error "Enable only one of ENDSTOPPULLUP_Y_MIN or ENDSTOPPULLDOWN_Y_MIN."
 #elif BOTH(ENDSTOPPULLUP_ZMIN, ENDSTOPPULLDOWN_ZMIN)
   #error "Enable only one of ENDSTOPPULLUP_Z_MIN or ENDSTOPPULLDOWN_Z_MIN."
+#elif BOTH(ENDSTOPPULLUP_IMIN, ENDSTOPPULLDOWN_IMIN)
+  #error "Enable only one of ENDSTOPPULLUP_I_MIN or ENDSTOPPULLDOWN_I_MIN."
+#elif BOTH(ENDSTOPPULLUP_JMIN, ENDSTOPPULLDOWN_JMIN)
+  #error "Enable only one of ENDSTOPPULLUP_J_MIN or ENDSTOPPULLDOWN_J_MIN."
+#elif BOTH(ENDSTOPPULLUP_KMIN, ENDSTOPPULLDOWN_KMIN)
+  #error "Enable only one of ENDSTOPPULLUP_K_MIN or ENDSTOPPULLDOWN_K_MIN."
 #endif
 
 /**
@@ -764,9 +784,9 @@ static_assert(Y_MAX_LENGTH >= Y_BED_SIZE, "Movement bounds (Y_MIN_POS, Y_MAX_POS
 #if ENABLED(BABYSTEPPING)
   #if ENABLED(SCARA)
     #error "BABYSTEPPING is not implemented for SCARA yet."
-  #elif BOTH(MARKFORGED_XY, BABYSTEP_XY)
+    #elif BOTH(MARKFORGED_XY, BABYSTEP_XY)
     #error "BABYSTEPPING only implemented for Z axis on MarkForged."
-  #elif BOTH(DELTA, BABYSTEP_XY)
+#elif BOTH(DELTA, BABYSTEP_XY)
     #error "BABYSTEPPING only implemented for Z axis on deltabots."
   #elif BOTH(BABYSTEP_ZPROBE_OFFSET, MESH_BED_LEVELING)
     #error "MESH_BED_LEVELING and BABYSTEP_ZPROBE_OFFSET is not a valid combination"
@@ -789,9 +809,9 @@ static_assert(Y_MAX_LENGTH >= Y_BED_SIZE, "Movement bounds (Y_MIN_POS, Y_MAX_POS
     #if ENABLED(BABYSTEP_XY)
       static_assert(BABYSTEP_MULTIPLICATOR_XY <= 0.25f, "BABYSTEP_MULTIPLICATOR_XY must be less than or equal to 0.25mm.");
     #endif
-  #elif ENABLED(BABYSTEP_DISPLAY_TOTAL) && ANY(TFT_320x240, TFT_320x240_SPI, TFT_480x320, TFT_480x320_SPI)
+    #elif ENABLED(BABYSTEP_DISPLAY_TOTAL) && ANY(TFT_320x240, TFT_320x240_SPI, TFT_480x320, TFT_480x320_SPI)
     #error "New Color UI (TFT_320x240, TFT_320x240_SPI, TFT_480x320, TFT_480x320_SPI) does not support BABYSTEP_DISPLAY_TOTAL yet."
-  #endif
+#endif
 #endif
 
 /**
@@ -1161,9 +1181,15 @@ static_assert(Y_MAX_LENGTH >= Y_BED_SIZE, "Movement bounds (Y_MIN_POS, Y_MAX_POS
   + ENABLED(COREZX) \
   + ENABLED(COREZY) \
   + ENABLED(MARKFORGED_XY)
-  #error "Please enable only one of DELTA, MORGAN_SCARA, COREXY, COREYX, COREXZ, COREZX, COREYZ, COREZY, or MARKFORGED_XY."
+  + ENABLED(ASYNC_SECONDARY_AXES) \
+  + ENABLED(FOAMCUTTER_XYUV)
+  #error "Please enable only one of DELTA, MORGAN_SCARA, COREXY, COREYX, COREXZ, COREZX, COREYZ, COREZY, ASYNC_SECONDARY_AXES or FOAMCUTTER_XYUV."
 #endif
 
+//#if LINEAR_AXES >= 5
+//  #error "LINEAR AXES >= 5 not yet supported, it causes unsafe movements. Developers should have a kill switch installed to stop movement before removing this check."
+//#endif
+  
 /**
  * Delta requirements
  */
@@ -1185,6 +1211,12 @@ static_assert(Y_MAX_LENGTH >= Y_BED_SIZE, "Movement bounds (Y_MIN_POS, Y_MAX_POS
   #endif
 #endif
 
+/**
+ * Delta requirements
+ */
+#if ENABLED(FOAMCUTTER_XYUV) && LINEAR_AXES < 5
+  #error "FOAMCUTTER_XYUV requires LINEAR_AXES >= 5."
+#endif
 /**
  * Junction deviation is incompatible with kinematic systems.
  */
@@ -1482,11 +1514,19 @@ static_assert(Y_MAX_LENGTH >= Y_BED_SIZE, "Movement bounds (Y_MIN_POS, Y_MAX_POS
  * Homing
  */
 constexpr float hbm[] = HOMING_BUMP_MM;
-static_assert(COUNT(hbm) == XYZ, "HOMING_BUMP_MM requires X, Y, and Z elements.");
+static_assert(COUNT(hbm) == LINEAR_AXES, "HOMING_BUMP_MM requires one element per linear axis.");
 static_assert(hbm[X_AXIS] >= 0, "HOMING_BUMP_MM.X must be greater than or equal to 0.");
 static_assert(hbm[Y_AXIS] >= 0, "HOMING_BUMP_MM.Y must be greater than or equal to 0.");
 static_assert(hbm[Z_AXIS] >= 0, "HOMING_BUMP_MM.Z must be greater than or equal to 0.");
-
+#if LINEAR_AXES >= 4
+  static_assert(hbm[I_AXIS] >= 0, "HOMING_BUMP_MM.I must be greater than or equal to 0.");
+#endif
+#if LINEAR_AXES >= 5
+  static_assert(hbm[J_AXIS] >= 0, "HOMING_BUMP_MM.J must be greater than or equal to 0.");
+#endif
+#if LINEAR_AXES >= 6
+  static_assert(hbm[K_AXIS] >= 0, "HOMING_BUMP_MM.K must be greater than or equal to 0.");
+#endif
 #if ENABLED(CODEPENDENT_XY_HOMING)
   #if ENABLED(QUICK_HOME)
     #error "QUICK_HOME is incompatible with CODEPENDENT_XY_HOMING."
@@ -1926,7 +1966,15 @@ static_assert(hbm[Z_AXIS] >= 0, "HOMING_BUMP_MM.Z must be greater than or equal 
 #define _PLUG_UNUSED_TEST(A,P) (DISABLED(USE_##P##MIN_PLUG, USE_##P##MAX_PLUG) \
   && !(ENABLED(A##_DUAL_ENDSTOPS) && WITHIN(A##2_USE_ENDSTOP, _##P##MAX_, _##P##MIN_)) \
   && !(ENABLED(A##_MULTI_ENDSTOPS) && WITHIN(A##2_USE_ENDSTOP, _##P##MAX_, _##P##MIN_)) )
-#define _AXIS_PLUG_UNUSED_TEST(A) (_PLUG_UNUSED_TEST(A,X) && _PLUG_UNUSED_TEST(A,Y) && _PLUG_UNUSED_TEST(A,Z))
+#if LINEAR_AXES == 6
+  #define _AXIS_PLUG_UNUSED_TEST(A) (_PLUG_UNUSED_TEST(A,X) && _PLUG_UNUSED_TEST(A,Y) && _PLUG_UNUSED_TEST(A,Z) && _PLUG_UNUSED_TEST(A,I) && _PLUG_UNUSED_TEST(A,J) && _PLUG_UNUSED_TEST(A,K))
+#elif LINEAR_AXES == 5
+  #define _AXIS_PLUG_UNUSED_TEST(A) (_PLUG_UNUSED_TEST(A,X) && _PLUG_UNUSED_TEST(A,Y) && _PLUG_UNUSED_TEST(A,Z) && _PLUG_UNUSED_TEST(A,I) && _PLUG_UNUSED_TEST(A,J))
+#elif LINEAR_AXES == 4
+  #define _AXIS_PLUG_UNUSED_TEST(A) (_PLUG_UNUSED_TEST(A,X) && _PLUG_UNUSED_TEST(A,Y) && _PLUG_UNUSED_TEST(A,Z) && _PLUG_UNUSED_TEST(A,I))
+#else
+  #define _AXIS_PLUG_UNUSED_TEST(A) (_PLUG_UNUSED_TEST(A,X) && _PLUG_UNUSED_TEST(A,Y) && _PLUG_UNUSED_TEST(A,Z))
+#endif
 
 // At least 3 endstop plugs must be used
 #if _AXIS_PLUG_UNUSED_TEST(X)
@@ -1937,6 +1985,21 @@ static_assert(hbm[Z_AXIS] >= 0, "HOMING_BUMP_MM.Z must be greater than or equal 
 #endif
 #if _AXIS_PLUG_UNUSED_TEST(Z)
   #error "You must enable USE_ZMIN_PLUG or USE_ZMAX_PLUG."
+#endif
+#if LINEAR_AXES >= 4
+  #if _AXIS_PLUG_UNUSED_TEST(I)
+    #error "You must enable USE_IMIN_PLUG or USE_IMAX_PLUG."
+  #endif
+#endif
+#if LINEAR_AXES >= 5
+  #if _AXIS_PLUG_UNUSED_TEST(J)
+    #error "You must enable USE_JMIN_PLUG or USE_JMAX_PLUG."
+  #endif
+#endif
+#if LINEAR_AXES >= 6
+  #if _AXIS_PLUG_UNUSED_TEST(K)
+    #error "You must enable USE_KMIN_PLUG or USE_KMAX_PLUG."
+  #endif
 #endif
 
 // Delta and Cartesian use 3 homing endstops
@@ -1950,7 +2013,22 @@ static_assert(hbm[Z_AXIS] >= 0, "HOMING_BUMP_MM.Z must be greater than or equal 
   #elif Y_HOME_DIR > 0 && DISABLED(USE_YMAX_PLUG)
     #error "Enable USE_YMAX_PLUG when homing Y to MAX."
   #endif
-#endif
+  #if LINEAR_AXES >= 4 && I_HOME_DIR < 0 && DISABLED(USE_IMIN_PLUG)
+    #error "Enable USE_IMIN_PLUG when homing I to MIN."
+  #elif LINEAR_AXES >= 4 && I_HOME_DIR > 0 && DISABLED(USE_IMAX_PLUG)
+    #error "Enable USE_IMAX_PLUG when homing I to MAX."
+  #endif
+  #if LINEAR_AXES >= 5 && J_HOME_DIR < 0 && DISABLED(USE_JMIN_PLUG)
+    #error "Enable USE_JMIN_PLUG when homing J to MIN."
+  #elif LINEAR_AXES >= 5 && J_HOME_DIR > 0 && DISABLED(USE_JMAX_PLUG)
+    #error "Enable USE_JMAX_PLUG when homing J to MAX."
+  #endif
+  #if LINEAR_AXES >= 6 && K_HOME_DIR < 0 && DISABLED(USE_KMIN_PLUG)
+    #error "Enable USE_KMIN_PLUG when homing K to MIN."
+  #elif LINEAR_AXES >= 6 && K_HOME_DIR > 0 && DISABLED(USE_KMAX_PLUG)
+    #error "Enable USE_KMAX_PLUG when homing K to MAX."
+  #endif
+#endif // !IS_SCARA
 
 // Z homing direction and plug usage flags
 #if Z_HOME_DIR < 0 && NONE(USE_ZMIN_PLUG, HOMING_Z_WITH_PROBE)
@@ -2325,6 +2403,12 @@ static_assert(hbm[Z_AXIS] >= 0, "HOMING_BUMP_MM.Z must be greater than or equal 
   #error "An SPI driven TMC driver on E6 requires E6_CS_PIN."
 #elif INVALID_TMC_SPI(E7)
   #error "An SPI driven TMC driver on E7 requires E7_CS_PIN."
+#elif INVALID_TMC_SPI(I)
+  #error "An SPI driven TMC on I requires I_CS_PIN."
+#elif INVALID_TMC_SPI(J)
+  #error "An SPI driven TMC on J requires J_CS_PIN."
+#elif INVALID_TMC_SPI(K)
+  #error "An SPI driven TMC on K requires K_CS_PIN."
 #endif
 #undef INVALID_TMC_SPI
 
@@ -2630,22 +2714,22 @@ constexpr float sanity_arr_1[] = DEFAULT_AXIS_STEPS_PER_UNIT,
 
 #define _ARR_TEST(N,I) (sanity_arr_##N[_MIN(I,int(COUNT(sanity_arr_##N))-1)] > 0)
 
-static_assert(COUNT(sanity_arr_1) >= XYZE,   "DEFAULT_AXIS_STEPS_PER_UNIT requires X, Y, Z and E elements.");
-static_assert(COUNT(sanity_arr_1) <= XYZE_N, "DEFAULT_AXIS_STEPS_PER_UNIT has too many elements. (Did you forget to enable DISTINCT_E_FACTORS?)");
+static_assert(COUNT(sanity_arr_1) >= NUM_AXIS,   "DEFAULT_AXIS_STEPS_PER_UNIT requires X, Y, Z and E elements.");
+static_assert(COUNT(sanity_arr_1) <= NUM_AXIS_N, "DEFAULT_AXIS_STEPS_PER_UNIT has too many elements. (Did you forget to enable DISTINCT_E_FACTORS?)");
 static_assert(   _ARR_TEST(1,0) && _ARR_TEST(1,1) && _ARR_TEST(1,2)
               && _ARR_TEST(1,3) && _ARR_TEST(1,4) && _ARR_TEST(1,5)
               && _ARR_TEST(1,6) && _ARR_TEST(1,7) && _ARR_TEST(1,8),
               "DEFAULT_AXIS_STEPS_PER_UNIT values must be positive.");
 
-static_assert(COUNT(sanity_arr_2) >= XYZE,   "DEFAULT_MAX_FEEDRATE requires X, Y, Z and E elements.");
-static_assert(COUNT(sanity_arr_2) <= XYZE_N, "DEFAULT_MAX_FEEDRATE has too many elements. (Did you forget to enable DISTINCT_E_FACTORS?)");
+static_assert(COUNT(sanity_arr_2) >= NUM_AXIS,   "DEFAULT_MAX_FEEDRATE requires X, Y, Z and E elements.");
+static_assert(COUNT(sanity_arr_2) <= NUM_AXIS_N, "DEFAULT_MAX_FEEDRATE has too many elements. (Did you forget to enable DISTINCT_E_FACTORS?)");
 static_assert(   _ARR_TEST(2,0) && _ARR_TEST(2,1) && _ARR_TEST(2,2)
               && _ARR_TEST(2,3) && _ARR_TEST(2,4) && _ARR_TEST(2,5)
               && _ARR_TEST(2,6) && _ARR_TEST(2,7) && _ARR_TEST(2,8),
               "DEFAULT_MAX_FEEDRATE values must be positive.");
 
-static_assert(COUNT(sanity_arr_3) >= XYZE,   "DEFAULT_MAX_ACCELERATION requires X, Y, Z and E elements.");
-static_assert(COUNT(sanity_arr_3) <= XYZE_N, "DEFAULT_MAX_ACCELERATION has too many elements. (Did you forget to enable DISTINCT_E_FACTORS?)");
+static_assert(COUNT(sanity_arr_3) >= NUM_AXIS,   "DEFAULT_MAX_ACCELERATION requires X, Y, Z and E elements.");
+static_assert(COUNT(sanity_arr_3) <= NUM_AXIS_N, "DEFAULT_MAX_ACCELERATION has too many elements. (Did you forget to enable DISTINCT_E_FACTORS?)");
 static_assert(   _ARR_TEST(3,0) && _ARR_TEST(3,1) && _ARR_TEST(3,2)
               && _ARR_TEST(3,3) && _ARR_TEST(3,4) && _ARR_TEST(3,5)
               && _ARR_TEST(3,6) && _ARR_TEST(3,7) && _ARR_TEST(3,8),
@@ -2654,8 +2738,8 @@ static_assert(   _ARR_TEST(3,0) && _ARR_TEST(3,1) && _ARR_TEST(3,2)
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
   #ifdef MAX_ACCEL_EDIT_VALUES
     constexpr float sanity_arr_4[] = MAX_ACCEL_EDIT_VALUES;
-    static_assert(COUNT(sanity_arr_4) >= XYZE, "MAX_ACCEL_EDIT_VALUES requires X, Y, Z and E elements.");
-    static_assert(COUNT(sanity_arr_4) <= XYZE, "MAX_ACCEL_EDIT_VALUES has too many elements. X, Y, Z and E elements only.");
+    static_assert(COUNT(sanity_arr_4) >= NUM_AXIS, "MAX_ACCEL_EDIT_VALUES requires X, Y, Z and E elements.");
+    static_assert(COUNT(sanity_arr_4) <= NUM_AXIS, "MAX_ACCEL_EDIT_VALUES has too many elements. X, Y, Z and E elements only.");
     static_assert(   _ARR_TEST(4,0) && _ARR_TEST(4,1) && _ARR_TEST(4,2)
                   && _ARR_TEST(4,3) && _ARR_TEST(4,4) && _ARR_TEST(4,5)
                   && _ARR_TEST(4,6) && _ARR_TEST(4,7) && _ARR_TEST(4,8),
@@ -2666,8 +2750,8 @@ static_assert(   _ARR_TEST(3,0) && _ARR_TEST(3,1) && _ARR_TEST(3,2)
 #if ENABLED(LIMITED_MAX_FR_EDITING)
   #ifdef MAX_FEEDRATE_EDIT_VALUES
     constexpr float sanity_arr_5[] = MAX_FEEDRATE_EDIT_VALUES;
-    static_assert(COUNT(sanity_arr_5) >= XYZE, "MAX_FEEDRATE_EDIT_VALUES requires X, Y, Z and E elements.");
-    static_assert(COUNT(sanity_arr_5) <= XYZE, "MAX_FEEDRATE_EDIT_VALUES has too many elements. X, Y, Z and E elements only.");
+    static_assert(COUNT(sanity_arr_5) >= NUM_AXIS, "MAX_FEEDRATE_EDIT_VALUES requires X, Y, Z and E elements.");
+    static_assert(COUNT(sanity_arr_5) <= NUM_AXIS, "MAX_FEEDRATE_EDIT_VALUES has too many elements. X, Y, Z and E elements only.");
     static_assert(   _ARR_TEST(5,0) && _ARR_TEST(5,1) && _ARR_TEST(5,2)
                   && _ARR_TEST(5,3) && _ARR_TEST(5,4) && _ARR_TEST(5,5)
                   && _ARR_TEST(5,6) && _ARR_TEST(5,7) && _ARR_TEST(5,8),
@@ -2678,8 +2762,8 @@ static_assert(   _ARR_TEST(3,0) && _ARR_TEST(3,1) && _ARR_TEST(3,2)
 #if ENABLED(LIMITED_JERK_EDITING)
   #ifdef MAX_JERK_EDIT_VALUES
     constexpr float sanity_arr_6[] = MAX_JERK_EDIT_VALUES;
-    static_assert(COUNT(sanity_arr_6) >= XYZE, "MAX_JERK_EDIT_VALUES requires X, Y, Z and E elements.");
-    static_assert(COUNT(sanity_arr_6) <= XYZE, "MAX_JERK_EDIT_VALUES has too many elements. X, Y, Z and E elements only.");
+    static_assert(COUNT(sanity_arr_6) >= NUM_AXIS, "MAX_JERK_EDIT_VALUES requires X, Y, Z and E elements.");
+    static_assert(COUNT(sanity_arr_6) <= NUM_AXIS, "MAX_JERK_EDIT_VALUES has too many elements. X, Y, Z and E elements only.");
     static_assert(   _ARR_TEST(6,0) && _ARR_TEST(6,1) && _ARR_TEST(6,2)
                   && _ARR_TEST(6,3) && _ARR_TEST(6,4) && _ARR_TEST(6,5)
                   && _ARR_TEST(6,6) && _ARR_TEST(6,7) && _ARR_TEST(6,8),

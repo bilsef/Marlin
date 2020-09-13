@@ -299,7 +299,10 @@
   #include "../feature/encoder_i2c.h"
 #endif
 
-enum AxisRelative : uint8_t { REL_X, REL_Y, REL_Z, REL_E, E_MODE_ABS, E_MODE_REL };
+enum AxisRelative : uint8_t {
+  LIST_N(LINEAR_AXES, REL_X, REL_Y, REL_Z, REL_I, REL_J, REL_K),
+  REL_E, E_MODE_ABS, E_MODE_REL
+};
 
 class GcodeSuite {
 public:
@@ -825,7 +828,7 @@ private:
     static void M871();
     static void M872();
   #endif
-
+  
   TERN_(LIN_ADVANCE, static void M900());
 
   #if HAS_TRINAMIC_CONFIG

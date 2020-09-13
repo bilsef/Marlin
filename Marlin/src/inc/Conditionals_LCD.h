@@ -600,6 +600,11 @@
 /**
  * DISTINCT_E_FACTORS affects how some E factors are accessed
  */
+#if EXTRUDERS == 0
+  #define NUM_AXIS (LINEAR_AXES)
+#else
+  #define NUM_AXIS (LINEAR_AXES + 1)
+#endif
 #if ENABLED(DISTINCT_E_FACTORS) && E_STEPPERS > 1
   #define DISTINCT_E E_STEPPERS
   #define XYZE_N (XYZ + E_STEPPERS)
@@ -614,6 +619,7 @@
   #define E_AXIS_N(E) E_AXIS
   #define UNUSED_E(E) UNUSED(E)
 #endif
+#define NUM_AXIS_N LINEAR_AXES + E_STEPPERS
 
 #if ENABLED(DWIN_CREALITY_LCD)
   #define SERIAL_CATCHALL 0
@@ -762,6 +768,15 @@
 #endif
 #ifndef INVERT_Z_DIR
   #define INVERT_Z_DIR false
+#endif
+#if LINEAR_AXES >= 4 && !defined(INVERT_I_DIR)
+  #define INVERT_I_DIR false
+#endif
+#if LINEAR_AXES >= 5 && !defined(INVERT_J_DIR)
+  #define INVERT_J_DIR false
+#endif
+#if LINEAR_AXES >= 6 && !defined(INVERT_K_DIR)
+  #define INVERT_K_DIR false
 #endif
 #ifndef INVERT_E_DIR
   #define INVERT_E_DIR false

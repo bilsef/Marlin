@@ -74,6 +74,15 @@ uint8_t GcodeSuite::axis_relative = (
     (ar_init.x ? _BV(REL_X) : 0)
   | (ar_init.y ? _BV(REL_Y) : 0)
   | (ar_init.z ? _BV(REL_Z) : 0)
+  #if LINEAR_AXES >= 4
+    | (ar_init.i ? _BV(REL_I) : 0)
+  #endif
+  #if LINEAR_AXES >= 5
+    | (ar_init.j ? _BV(REL_J) : 0)
+  #endif
+  #if LINEAR_AXES >= 6
+    | (ar_init.k ? _BV(REL_K) : 0)
+  #endif
   | (ar_init.e ? _BV(REL_E) : 0)
 );
 
@@ -136,7 +145,17 @@ int8_t GcodeSuite::get_target_e_stepper_from_command() {
  *  - Set the feedrate, if included
  */
 void GcodeSuite::get_destination_from_command() {
-  xyze_bool_t seen = { false, false, false, false };
+  xyze_bool_t seen = { false, false, false, false      
+    #if LINEAR_AXES >= 4
+      , false
+    #endif
+    #if LINEAR_AXES >= 5
+      , false
+    #endif
+    #if LINEAR_AXES >= 6
+      , false
+    #endif  
+  };
 
   #if ENABLED(CANCEL_OBJECTS)
     const bool &skip_move = cancelable.skipping;
@@ -145,8 +164,8 @@ void GcodeSuite::get_destination_from_command() {
   #endif
 
   // Get new XYZ position, whether absolute or relative
-  LOOP_XYZ(i) {
-    if ( (seen[i] = parser.seenval(XYZ_CHAR(i))) ) {
+  LOOP_LINEAR(i) {
+    if ( (seen[i] = parser.seenval(axis_codes[i])) ) {
       const float v = parser.value_axis_units((AxisEnum)i);
       if (skip_move)
         destination[i] = current_position[i];

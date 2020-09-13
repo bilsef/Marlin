@@ -26,11 +26,11 @@
 //
 // Trinamic Stallguard pins
 //
-#define X_DIAG_PIN                         P1_29  // X-
-#define Y_DIAG_PIN                         P1_27  // Y-
-#define Z_DIAG_PIN                         P1_25  // Z-
-#define E0_DIAG_PIN                        P1_28  // X+
-#define E1_DIAG_PIN                        P1_26  // Y+
+//#define X_DIAG_PIN                         P1_29  // X-
+//#define Y_DIAG_PIN                         P1_27  // Y-
+//#define Z_DIAG_PIN                         P1_25  // Z-
+//#define E0_DIAG_PIN                        P1_28  // X+
+//#define E1_DIAG_PIN                        P1_26  // Y+
 
 //
 // Limit Switches
@@ -44,7 +44,7 @@
   #endif
 #else
   #define X_MIN_PIN                        P1_29  // X-
-  #define X_MAX_PIN                        P1_28  // X+
+  //#define X_MAX_PIN                        P1_28  // X+
 #endif
 
 #ifdef Y_STALL_SENSITIVITY
@@ -56,8 +56,11 @@
   #endif
 #else
   #define Y_MIN_PIN                        P1_27  // Y-
-  #define Y_MAX_PIN                        P1_26  // Y+
+  //#define Y_MAX_PIN                        P1_26  // Y+
 #endif
+
+#define I_MIN_PIN   P1_28
+#define J_MIN_PIN   P1_26
 
 #ifdef Z_STALL_SENSITIVITY
   #define Z_STOP_PIN                  Z_DIAG_PIN
@@ -68,7 +71,7 @@
   #endif
 #else
   #define Z_MIN_PIN                        P1_25  // Z-
-  #define Z_MAX_PIN                        P1_24  // Z+
+  //#define Z_MAX_PIN                        P1_24  // Z+
 #endif
 
 #define ONBOARD_ENDSTOPPULLUPS                    // Board has built-in pullups
@@ -83,16 +86,16 @@
 //
 // Z Probe (when not Z_MIN_PIN)
 //
-#ifndef Z_MIN_PROBE_PIN
-  #define Z_MIN_PROBE_PIN                  P1_24
-#endif
+//#ifndef Z_MIN_PROBE_PIN
+//  #define Z_MIN_PROBE_PIN                  P1_24
+//#endif
 
 //
 // Filament Runout Sensor
 //
-#ifndef FIL_RUNOUT_PIN
-  #define FIL_RUNOUT_PIN                   P1_28
-#endif
+//#ifndef FIL_RUNOUT_PIN
+//  #define FIL_RUNOUT_PIN                   P1_28
+//#endif
 
 //
 // Steppers
@@ -101,33 +104,41 @@
 #define X_DIR_PIN                          P2_06
 #define X_ENABLE_PIN                       P2_01
 #ifndef X_CS_PIN
-  #define X_CS_PIN                         P1_17
+//  #define X_CS_PIN                         P1_17
 #endif
 
 #define Y_STEP_PIN                         P0_19
 #define Y_DIR_PIN                          P0_20
 #define Y_ENABLE_PIN                       P2_08
 #ifndef Y_CS_PIN
-  #define Y_CS_PIN                         P1_15
+//  #define Y_CS_PIN                         P1_15
 #endif
 
 #define Z_STEP_PIN                         P0_22
 #define Z_DIR_PIN                          P2_11
 #define Z_ENABLE_PIN                       P0_21
 #ifndef Z_CS_PIN
-  #define Z_CS_PIN                         P1_10
+//  #define Z_CS_PIN                         P1_10
 #endif
 
 #define E0_STEP_PIN                        P2_13
 #define E0_DIR_PIN                         P0_11
 #define E0_ENABLE_PIN                      P2_12
 #ifndef E0_CS_PIN
-  #define E0_CS_PIN                        P1_08
+//  #define E0_CS_PIN                        P1_08
 #endif
 
-#ifndef E1_CS_PIN
-  #define E1_CS_PIN                        P1_01
-#endif
+#define I_STEP_PIN                         P1_17
+#define I_DIR_PIN                          P1_15
+#define I_ENABLE_PIN                       P1_10
+
+#define J_STEP_PIN                         P1_08
+#define J_DIR_PIN                          P1_01
+#define J_ENABLE_PIN                       P1_28
+
+//#ifndef E1_CS_PIN
+//  #define E1_CS_PIN                        P1_01
+//#endif
 
 //
 // Software SPI pins for TMC2130 stepper drivers
