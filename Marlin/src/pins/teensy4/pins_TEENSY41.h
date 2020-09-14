@@ -74,16 +74,16 @@
 //
 #define X_STOP_PIN                            41
 #define Y_STOP_PIN                            38
-#define Z_STOP_PIN                            24
-#define I_STOP_PIN                            19
+#define Z_STOP_PIN                            37
+#define I_STOP_PIN                            18
 #define J_STOP_PIN                            18
-#define K_STOP_PIN                            24
+#define K_STOP_PIN                            18
 //
 // Steppers
 //
-#define I_STEP_PIN                             4
-#define I_DIR_PIN                              3
-#define I_ENABLE_PIN                           6
+#define X_STEP_PIN                             4
+#define X_DIR_PIN                              3
+#define X_ENABLE_PIN                           6
 //#define X_CS_PIN                              30
 
 #define Y_STEP_PIN                            24
@@ -96,10 +96,10 @@
 #define Z_ENABLE_PIN                          22
 //#define Z_CS_PIN                              32
 
-#define X_STEP_PIN                             2
-#define X_DIR_PIN                              1
-#define X_ENABLE_PIN                           5
-#define X_CS_PIN                               0
+#define I_STEP_PIN                             2
+#define I_DIR_PIN                              1
+#define I_ENABLE_PIN                           5
+#define I_CS_PIN                               0
 
 #define J_STEP_PIN                             9
 #define J_DIR_PIN                              8
@@ -111,7 +111,7 @@
 #define K_ENABLE_PIN                          31
 #define K_CS_PIN                              26
 
-#define E0_STEP_PIN                           42
+#define E0_STEP_PIN                           42  // E steppers not used, so assign to dummy pins
 #define E0_DIR_PIN                            43
 #define E0_ENABLE_PIN                         44
 
@@ -121,9 +121,9 @@
 
 #define HEATER_0_PIN                          37
 #define HEATER_1_PIN                          18
-#define HEATER_BED_PIN                        36
+#define HEATER_BED_PIN                        45  // unused
 #ifndef FAN_PIN
-  #define FAN_PIN                             29
+//  #define FAN_PIN                             29
 #endif
 
 #define TEMP_0_PIN                             2  // Extruder / Analog pin numbering: 2 => A2
@@ -135,7 +135,7 @@
 //#define ALARM_PIN                             -1
 
 //#define FILWIDTH_PIN                           6  // A6
-#define SOL0_PIN                              28
+//#define SOL0_PIN                              28
 #define SERVO0_PIN                            22
 #define SERVO1_PIN                            23
 

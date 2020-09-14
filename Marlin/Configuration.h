@@ -188,10 +188,10 @@
  * I (AXIS4), J (AXIS5), K (AXIS6).
  */
 #if LINEAR_AXES >= 4
-  #define AXIS4_NAME 'I' // :['I', 'A', 'B', 'C', 'U', 'V', 'W']
+  #define AXIS4_NAME 'A' // :['I', 'A', 'B', 'C', 'U', 'V', 'W']
 #endif
 #if LINEAR_AXES >= 5
-  #define AXIS5_NAME 'J' // :['J', 'A', 'B', 'C', 'U', 'V', 'W']
+  #define AXIS5_NAME 'B' // :['J', 'A', 'B', 'C', 'U', 'V', 'W']
 #endif
 #if LINEAR_AXES >= 6
   #define AXIS6_NAME 'K' // :['K', 'A', 'B', 'C', 'U', 'V', 'W']
@@ -840,14 +840,30 @@
  * Override with M92
  *                                      X, Y, Z, [I ,[J ,[K ,]]] E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 100, 100, 100, 100, 500 }
+#if  LINEAR_AXES == 4
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 100, 100, 50 }
+#elif LINEAR_AXES == 5
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 100, 100, 100, 50 }
+#elif LINEAR_AXES == 6
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 100, 100, 100, 100, 50 }
+#else
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 100, 50 }
+#endif
 
 /**
  * Default Max Feed Rate (mm/s)
  * Override with M203
  *                                      X, Y, Z, [I ,[J ,[K ,]]] E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 5000, 5000, 5000, 5000, 5000, 5000, 50 }
+#if  LINEAR_AXES == 4
+  #define DEFAULT_MAX_FEEDRATE          { 5000, 5000, 5000, 5000, 5000 }
+#elif LINEAR_AXES == 5
+  #define DEFAULT_MAX_FEEDRATE          { 5000, 5000, 5000, 5000, 5000, 1000 }
+#elif LINEAR_AXES == 6
+  #define DEFAULT_MAX_FEEDRATE          { 5000, 5000, 5000, 5000, 1000, 5000, 1000 }
+#else
+  #define DEFAULT_MAX_FEEDRATE          { 5000, 5000, 5000, 1000 }
+#endif
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
@@ -860,7 +876,15 @@
  * Override with M201
  *                                      X, Y, Z, [I ,[J ,[K ,]]] E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 30000, 30000, 30000, 30000, 30000, 30000, 10000 }
+#if  LINEAR_AXES == 4
+  #define DEFAULT_MAX_ACCELERATION      { 30000, 30000, 30000, 30000, 10000 }
+#elif LINEAR_AXES == 5
+  #define DEFAULT_MAX_ACCELERATION      { 30000, 30000, 30000, 30000, 30000, 10000 }
+#elif LINEAR_AXES == 6
+  #define DEFAULT_MAX_ACCELERATION      { 30000, 30000, 30000, 30000, 30000, 30000, 10000 }
+#else
+  #define DEFAULT_MAX_ACCELERATION      { 30000, 30000, 30000, 10000 }
+#endif
 
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
@@ -889,12 +913,12 @@
  */
 #define CLASSIC_JERK
 #if ENABLED(CLASSIC_JERK)
-  #define DEFAULT_XJERK  0.3
-  #define DEFAULT_YJERK  0.3
-  #define DEFAULT_ZJERK  0.3
-  #define DEFAULT_IJERK  0.3
-  #define DEFAULT_JJERK  0.3
-  #define DEFAULT_KJERK  0.3
+  #define DEFAULT_XJERK  15.0
+  #define DEFAULT_YJERK  15.0
+  #define DEFAULT_ZJERK  15.0
+  #define DEFAULT_IJERK  15.0
+  #define DEFAULT_JJERK  15.0
+  #define DEFAULT_KJERK  15.0
 
   //#define TRAVEL_EXTRA_XYJERK 0.0     // Additional jerk allowance for all travel moves
 
@@ -1237,8 +1261,8 @@
 // @section machine
 
 // The size of the print bed
-#define X_BED_SIZE 500
-#define Y_BED_SIZE 500
+#define X_BED_SIZE 5000
+#define Y_BED_SIZE 5000
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
 #define X_MIN_POS 0

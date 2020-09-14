@@ -573,7 +573,7 @@ class Stepper {
 
         // Select the proper multistepping
         uint8_t idx = 0;
-        while (idx < 7 && step_rate > (uint32_t)pgm_read_dword(&limit[idx])) {
+        while (idx < 4 && step_rate > (uint32_t)pgm_read_dword(&limit[idx])) {
           step_rate >>= 1;
           multistep <<= 1;
           ++idx;
