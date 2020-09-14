@@ -72,17 +72,18 @@
 //
 // Limit Switches
 //
-#define X_STOP_PIN                            39
+#define X_STOP_PIN                            41
 #define Y_STOP_PIN                            38
 #define Z_STOP_PIN                            24
-#define I_STOP_PIN                            38
-#define J_STOP_PIN                            24
+#define I_STOP_PIN                            19
+#define J_STOP_PIN                            18
+#define K_STOP_PIN                            24
 //
 // Steppers
 //
-#define X_STEP_PIN                             4
-#define X_DIR_PIN                              3
-#define X_ENABLE_PIN                           6
+#define I_STEP_PIN                             4
+#define I_DIR_PIN                              3
+#define I_ENABLE_PIN                           6
 //#define X_CS_PIN                              30
 
 #define Y_STEP_PIN                            24
@@ -95,23 +96,28 @@
 #define Z_ENABLE_PIN                          22
 //#define Z_CS_PIN                              32
 
-#define I_STEP_PIN                             2
-#define I_DIR_PIN                              1
-#define I_ENABLE_PIN                           5
-#define I_CS_PIN                               0
+#define X_STEP_PIN                             2
+#define X_DIR_PIN                              1
+#define X_ENABLE_PIN                           5
+#define X_CS_PIN                               0
 
 #define J_STEP_PIN                             9
 #define J_DIR_PIN                              8
 #define J_ENABLE_PIN                          25
 #define J_CS_PIN                               7
 
-#define E0_STEP_PIN                           28
-#define E0_DIR_PIN                            27
-#define E0_ENABLE_PIN                         31
+#define K_STEP_PIN                            28
+#define K_DIR_PIN                             27
+#define K_ENABLE_PIN                          31
+#define K_CS_PIN                              26
 
-#define E1_STEP_PIN                           28
-#define E1_DIR_PIN                            27
-#define E1_ENABLE_PIN                         31
+#define E0_STEP_PIN                           42
+#define E0_DIR_PIN                            43
+#define E0_ENABLE_PIN                         44
+
+#define E1_STEP_PIN                           42
+#define E1_DIR_PIN                            43
+#define E1_ENABLE_PIN                         44
 
 #define HEATER_0_PIN                          37
 #define HEATER_1_PIN                          18

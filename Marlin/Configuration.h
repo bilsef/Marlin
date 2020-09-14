@@ -75,7 +75,7 @@
 // coordinated. Optional additional axes I(, J(, K)) are uncoordinated
 // (asynchronous). Disable for coordinated movement of all axes.
 //
-//#define ASYNC_SECONDARY_AXES
+#define ASYNC_SECONDARY_AXES
 
 //===========================================================================
 //=========================== FOAMCUTTER_XYUV ==============================
@@ -694,7 +694,7 @@
 //#define USE_ZMIN_PLUG
 #define USE_IMIN_PLUG
 #define USE_JMIN_PLUG
-//#define USE_KMIN_PLUG
+#define USE_KMIN_PLUG
 //#define USE_XMAX_PLUG
 //#define USE_YMAX_PLUG
 #define USE_ZMAX_PLUG
@@ -840,14 +840,14 @@
  * Override with M92
  *                                      X, Y, Z, [I ,[J ,[K ,]]] E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 100, 8.888, 8.888, 500 }
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 100, 100, 100, 100, 500 }
 
 /**
  * Default Max Feed Rate (mm/s)
  * Override with M203
  *                                      X, Y, Z, [I ,[J ,[K ,]]] E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 3000, 3000, 3000, 3000, 3000, 50 }
+#define DEFAULT_MAX_FEEDRATE          { 5000, 5000, 5000, 5000, 5000, 5000, 50 }
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
@@ -860,7 +860,7 @@
  * Override with M201
  *                                      X, Y, Z, [I ,[J ,[K ,]]] E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 30000, 30000, 30000, 30000, 30000, 10000 }
+#define DEFAULT_MAX_ACCELERATION      { 30000, 30000, 30000, 30000, 30000, 30000, 10000 }
 
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
@@ -894,7 +894,7 @@
   #define DEFAULT_ZJERK  0.3
   #define DEFAULT_IJERK  0.3
   #define DEFAULT_JJERK  0.3
-  //#define DEFAULT_KJERK  0.3
+  #define DEFAULT_KJERK  0.3
 
   //#define TRAVEL_EXTRA_XYJERK 0.0     // Additional jerk allowance for all travel moves
 
@@ -1173,7 +1173,7 @@
 #define E_ENABLE_ON 0 // For all extruders
 #define I_ENABLE_ON 0
 #define J_ENABLE_ON 0
-//#define K_ENABLE_ON 0
+#define K_ENABLE_ON 0
 
 // Disable axis steppers immediately when they're not being stepped.
 // WARNING: When motors turn off there is a chance of losing position accuracy!
@@ -1182,7 +1182,7 @@
 #define DISABLE_Z false
 #define DISABLE_I false
 #define DISABLE_J false
-//#define DISABLE_K false
+#define DISABLE_K false
 
 // Turn off the display blinking that warns about possible accuracy reduction
 //#define DISABLE_REDUCED_ACCURACY_WARNING
@@ -1232,7 +1232,7 @@
 #define Z_HOME_DIR  1
 #define I_HOME_DIR -1
 #define J_HOME_DIR -1
-//#define K_HOME_DIR -1
+#define K_HOME_DIR -1
 
 // @section machine
 
@@ -1251,8 +1251,8 @@
 #define I_MAX_POS 50
 #define J_MIN_POS 0
 #define J_MAX_POS 50
-//#define K_MIN_POS 0
-//#define K_MAX_POS 50
+#define K_MIN_POS 0
+#define K_MAX_POS 50
 
 /**
  * Software Endstops
@@ -1271,7 +1271,7 @@
   #define MIN_SOFTWARE_ENDSTOP_Z
 //  #define MIN_SOFTWARE_ENDSTOP_I
 //  #define MIN_SOFTWARE_ENDSTOP_J
-  #define MIN_SOFTWARE_ENDSTOP_K
+ // #define MIN_SOFTWARE_ENDSTOP_K
 #endif
 
 // Max software endstops constrain movement within maximum coordinate bounds
@@ -1282,7 +1282,7 @@
 //  #define MAX_SOFTWARE_ENDSTOP_Z
 //  #define MAX_SOFTWARE_ENDSTOP_I
 //  #define MAX_SOFTWARE_ENDSTOP_J
-  #define MAX_SOFTWARE_ENDSTOP_K
+//  #define MAX_SOFTWARE_ENDSTOP_K
 #endif
 
 #if EITHER(MIN_SOFTWARE_ENDSTOPS, MAX_SOFTWARE_ENDSTOPS)
@@ -1527,7 +1527,7 @@
 #define HOMING_FEEDRATE_Z  (50*60)
 #define HOMING_FEEDRATE_I (50*60)
 #define HOMING_FEEDRATE_J (50*60)
-//#define HOMING_FEEDRATE_K (50*60)
+#define HOMING_FEEDRATE_K (50*60)
 
 // Validate that endstops are triggered on homing moves
 //#define VALIDATE_HOMING_ENDSTOPS
