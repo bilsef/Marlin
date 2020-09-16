@@ -169,7 +169,7 @@
  * See https://github.com/DerAndere1/Marlin/wiki
  * :[3, 4, 5, 6]
  */
-#define LINEAR_AXES 5
+#define LINEAR_AXES 6
 
 /**
  * Axis codes for additional axes:
@@ -194,7 +194,7 @@
   #define AXIS5_NAME 'B' // :['J', 'A', 'B', 'C', 'U', 'V', 'W']
 #endif
 #if LINEAR_AXES >= 6
-  #define AXIS6_NAME 'K' // :['K', 'A', 'B', 'C', 'U', 'V', 'W']
+  #define AXIS6_NAME 'C' // :['K', 'A', 'B', 'C', 'U', 'V', 'W']
 #endif
 
 // @section extruder
@@ -840,34 +840,18 @@
  * Override with M92
  *                                      X, Y, Z, [I ,[J ,[K ,]]] E0 [, E1[, E2...]]
  */
-#if  LINEAR_AXES == 4
-  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 100, 100, 50 }
-#elif LINEAR_AXES == 5
-  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 100, 100, 100, 50 }
-#elif LINEAR_AXES == 6
-  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 100, 100, 100, 100, 50 }
-#else
-  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 100, 50 }
-#endif
+#define DEFAULT_AXIS_STEPS_PER_UNIT     {LIST_N(LINEAR_AXES, 100, 100, 100, 100, 100, 100), 50}
 
 /**
  * Default Max Feed Rate (mm/s)
  * Override with M203
  *                                      X, Y, Z, [I ,[J ,[K ,]]] E0 [, E1[, E2...]]
  */
-#if  LINEAR_AXES == 4
-  #define DEFAULT_MAX_FEEDRATE          { 5000, 5000, 5000, 5000, 5000 }
-#elif LINEAR_AXES == 5
-  #define DEFAULT_MAX_FEEDRATE          { 5000, 5000, 5000, 5000, 5000, 1000 }
-#elif LINEAR_AXES == 6
-  #define DEFAULT_MAX_FEEDRATE          { 5000, 5000, 5000, 5000, 1000, 5000, 1000 }
-#else
-  #define DEFAULT_MAX_FEEDRATE          { 5000, 5000, 5000, 1000 }
-#endif
+#define DEFAULT_MAX_FEEDRATE          {LIST_N(LINEAR_AXES, 5000, 5000, 5000, 5000, 5000, 5000), 1000 }
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
-  #define MAX_FEEDRATE_EDIT_VALUES    { 600, 600, 10, 50 } // ...or, set your own edit limits
+  #define MAX_FEEDRATE_EDIT_VALUES    {LIST_N(LINEAR_AXES, 5000, 5000, 5000, 5000, 5000, 5000), 1000 } // ...or, set your own edit limits
 #endif
 
 /**
@@ -876,19 +860,11 @@
  * Override with M201
  *                                      X, Y, Z, [I ,[J ,[K ,]]] E0 [, E1[, E2...]]
  */
-#if  LINEAR_AXES == 4
-  #define DEFAULT_MAX_ACCELERATION      { 30000, 30000, 30000, 30000, 10000 }
-#elif LINEAR_AXES == 5
-  #define DEFAULT_MAX_ACCELERATION      { 30000, 30000, 30000, 30000, 30000, 10000 }
-#elif LINEAR_AXES == 6
-  #define DEFAULT_MAX_ACCELERATION      { 30000, 30000, 30000, 30000, 30000, 30000, 10000 }
-#else
-  #define DEFAULT_MAX_ACCELERATION      { 30000, 30000, 30000, 10000 }
-#endif
+#define DEFAULT_MAX_ACCELERATION      {LIST_N(LINEAR_AXES, 30000, 30000, 30000, 30000, 30000, 30000), 10000 }
 
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
-  #define MAX_ACCEL_EDIT_VALUES       { 6000, 6000, 200, 20000 } // ...or, set your own edit limits
+  #define MAX_ACCEL_EDIT_VALUES       {LIST_N(LINEAR_AXES, 30000, 30000, 30000, 30000, 30000, 30000), 10000 } // ...or, set your own edit limits
 #endif
 
 /**
@@ -913,12 +889,12 @@
  */
 #define CLASSIC_JERK
 #if ENABLED(CLASSIC_JERK)
-  #define DEFAULT_XJERK  15.0
-  #define DEFAULT_YJERK  15.0
-  #define DEFAULT_ZJERK  15.0
-  #define DEFAULT_IJERK  15.0
-  #define DEFAULT_JJERK  15.0
-  #define DEFAULT_KJERK  15.0
+  #define DEFAULT_XJERK  10.0
+  #define DEFAULT_YJERK  10.0
+  #define DEFAULT_ZJERK  10.0
+  #define DEFAULT_IJERK  10.0
+  #define DEFAULT_JJERK  10.0
+  #define DEFAULT_KJERK  10.0
 
   //#define TRAVEL_EXTRA_XYJERK 0.0     // Additional jerk allowance for all travel moves
 
@@ -1224,7 +1200,7 @@
 #define INVERT_Z_DIR false
 #define INVERT_I_DIR false
 #define INVERT_J_DIR false
-//#define INVERT_K_DIR false
+#define INVERT_K_DIR false
 
 // @section extruder
 
@@ -1628,7 +1604,7 @@
  *   M501 - Read settings from EEPROM. (i.e., Throw away unsaved changes)
  *   M502 - Revert settings to "factory" defaults. (Follow with M500 to init the EEPROM.)
  */
-#define EEPROM_SETTINGS     // Persistent storage with M500 and M501
+//#define EEPROM_SETTINGS     // Persistent storage with M500 and M501
 //#define DISABLE_M503        // Saves ~2700 bytes of PROGMEM. Disable for release!
 #define EEPROM_CHITCHAT       // Give feedback on EEPROM commands. Disable to save PROGMEM.
 #define EEPROM_BOOT_SILENT    // Keep M503 quiet and only give errors during first load
