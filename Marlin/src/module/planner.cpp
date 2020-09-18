@@ -2071,6 +2071,7 @@ bool Planner::_populate_block(block_t * const block, bool split_move,
           #endif
         #endif
       );
+    }
     /**
      * At this point at least one of the axes has more steps than
      * MIN_STEPS_PER_SEGMENT, ensuring the segment won't get dropped as
