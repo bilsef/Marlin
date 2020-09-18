@@ -491,7 +491,9 @@
  *
  */
 
-#if EXTRUDERS == 0
+#if EXTRUDERS
+  #define HAS_EXTRUDERS 1
+#else
   #undef EXTRUDERS
   #define EXTRUDERS 0
   #undef SINGLENOZZLE

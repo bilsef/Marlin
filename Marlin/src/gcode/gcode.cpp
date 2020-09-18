@@ -192,7 +192,6 @@ void GcodeSuite::get_destination_from_command() {
 
   if (parser.linearval('F') > 0)
     feedrate_mm_s = parser.value_feedrate();
-
   #if ENABLED(PRINTCOUNTER)
     if (!DEBUGGING(DRYRUN) && !skip_move)
       print_job_timer.incFilamentUsed(destination.e - current_position.e);

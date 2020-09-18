@@ -1772,7 +1772,6 @@ bool Planner::_populate_block(block_t * const block, bool split_move,
   #endif
   , feedRate_t fr_mm_s, const uint8_t extruder, const float &millimeters/*=0.0*/
 ) {
-
   const int32_t da = target.a - position.a,
                 db = target.b - position.b,
                 dc = target.c - position.c;
@@ -1998,7 +1997,7 @@ bool Planner::_populate_block(block_t * const block, bool split_move,
   else {
     if (millimeters)
       block->millimeters = millimeters;
-    else
+    else {
       block->millimeters = SQRT(
         #if EITHER(CORE_IS_XY, MARKFORGED_XY)
           sq(steps_dist_mm.head.x) + sq(steps_dist_mm.head.y) + sq(steps_dist_mm.z)
@@ -3239,18 +3238,8 @@ void Planner::set_max_feedrate(const uint8_t axis, float targetValue) {
     #endif
     limit_and_warn(targetValue, axis, PSTR("Feedrate"), max_fr_edit_scaled);
   #endif
-  #if LINEAR_AXES >= 4
-  // FIXME (DerAndere):!!! Work-around for issue with internal feedrate for I_AXIS
-
-    if (axis == 3) {
-      settings.max_feedrate_mm_s[axis] = targetValue * 4.0; 
-    }
-    else {
-      settings.max_feedrate_mm_s[axis] = targetValue;
-    }
-  #else
-    settings.max_feedrate_mm_s[axis] = targetValue;
-  #endif
+  
+  settings.max_feedrate_mm_s[axis] = targetValue;
 }
 
 void Planner::set_max_jerk(const AxisEnum axis, float targetValue) {

@@ -298,7 +298,7 @@ void GcodeSuite::G28() {
 
   #else // NOT DELTA
 
-    #define _UNSAFE(A) (homeZ && TERN0(Z_SAFE_HOMING, axes_should_home(_BV(A##_AXIS))))
+    #define _UNSAFE(A) (homeZ && TERN0(Z_SAFE_HOMING, axes_need_homing(_BV(A##_AXIS))))
 
     const bool homeZ = parser.seen('Z'),
                // Other axes should be homed before Z safe-homing

@@ -29,7 +29,7 @@ void report_M92(const bool echo=true, const int8_t e=-1) {
     PSTR(" M92 X"), LINEAR_UNIT(planner.settings.axis_steps_per_mm[X_AXIS]),
     SP_Y_STR, LINEAR_UNIT(planner.settings.axis_steps_per_mm[Y_AXIS]),
     SP_Z_STR, LINEAR_UNIT(planner.settings.axis_steps_per_mm[Z_AXIS]),
-    SP_I_STR, LINEAR_UNIT(planner.settings.axis_steps_per_mm[I_AXIS]), // FIXME: Devision by 4.0 to work around issue that seemmingly, internally used steps_per_mm[I_AXIS] = DEFAULT_STEPS_PER_UNIT[I_AXIS]/4.0 ?
+    SP_I_STR, LINEAR_UNIT(planner.settings.axis_steps_per_mm[I_AXIS]),
     SP_J_STR, LINEAR_UNIT(planner.settings.axis_steps_per_mm[J_AXIS]),
     SP_K_STR, LINEAR_UNIT(planner.settings.axis_steps_per_mm[K_AXIS]))
   );

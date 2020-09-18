@@ -258,11 +258,8 @@ void do_z_clearance(const float &zclear, const bool z_known=true, const bool rai
 //
 // Homing
 //
-void homeaxis(const AxisEnum axis);
-void set_axis_is_at_home(const AxisEnum axis);
-void set_axis_never_homed(const AxisEnum axis);
-uint8_t axes_should_home(uint8_t axis_bits=_BV(LINEAR_AXES)-1);
-bool homing_needed_error(uint8_t axis_bits=_BV(LINEAR_AXES)-1);
+uint8_t axes_need_homing(uint8_t axis_bits=_BV(LINEAR_AXES)-1);
+bool axis_unhomed_error(uint8_t axis_bits=_BV(LINEAR_AXES)-1);
 
 #if ENABLED(NO_MOTION_BEFORE_HOMING)
   #define MOTION_CONDITIONS (IsRunning() && !homing_needed_error())

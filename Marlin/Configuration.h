@@ -188,13 +188,13 @@
  * I (AXIS4), J (AXIS5), K (AXIS6).
  */
 #if LINEAR_AXES >= 4
-  #define AXIS4_NAME 'A' // :['I', 'A', 'B', 'C', 'U', 'V', 'W']
+  #define AXIS4_NAME 'I' // :['I', 'A', 'B', 'C', 'U', 'V', 'W']
 #endif
 #if LINEAR_AXES >= 5
-  #define AXIS5_NAME 'B' // :['J', 'A', 'B', 'C', 'U', 'V', 'W']
+  #define AXIS5_NAME 'J' // :['J', 'A', 'B', 'C', 'U', 'V', 'W']
 #endif
 #if LINEAR_AXES >= 6
-  #define AXIS6_NAME 'C' // :['K', 'A', 'B', 'C', 'U', 'V', 'W']
+  #define AXIS6_NAME 'K' // :['K', 'A', 'B', 'C', 'U', 'V', 'W']
 #endif
 
 // @section extruder
@@ -900,7 +900,7 @@
 
   //#define LIMITED_JERK_EDITING        // Limit edit via M205 or LCD to DEFAULT_aJERK * 2
   #if ENABLED(LIMITED_JERK_EDITING)
-    #define MAX_JERK_EDIT_VALUES { 20, 20, 0.6, 10 } // ...or, set your own edit limits
+    #define MAX_JERK_EDIT_VALUES {LIST_N(LINEAR_AXES, 20, 20, 0.6, 20, 20, 20), 10 } // ...or, set your own edit limits
   #endif
 #endif
 
@@ -1269,9 +1269,9 @@
   #define MIN_SOFTWARE_ENDSTOP_X
   #define MIN_SOFTWARE_ENDSTOP_Y
   #define MIN_SOFTWARE_ENDSTOP_Z
-//  #define MIN_SOFTWARE_ENDSTOP_I
-//  #define MIN_SOFTWARE_ENDSTOP_J
- // #define MIN_SOFTWARE_ENDSTOP_K
+  #define MIN_SOFTWARE_ENDSTOP_I
+  #define MIN_SOFTWARE_ENDSTOP_J
+  #define MIN_SOFTWARE_ENDSTOP_K
 #endif
 
 // Max software endstops constrain movement within maximum coordinate bounds
@@ -1279,10 +1279,10 @@
 #if ENABLED(MAX_SOFTWARE_ENDSTOPS)
   #define MAX_SOFTWARE_ENDSTOP_X
   #define MAX_SOFTWARE_ENDSTOP_Y
-//  #define MAX_SOFTWARE_ENDSTOP_Z
-//  #define MAX_SOFTWARE_ENDSTOP_I
-//  #define MAX_SOFTWARE_ENDSTOP_J
-//  #define MAX_SOFTWARE_ENDSTOP_K
+  #define MAX_SOFTWARE_ENDSTOP_Z
+  #define MAX_SOFTWARE_ENDSTOP_I
+  #define MAX_SOFTWARE_ENDSTOP_J
+  #define MAX_SOFTWARE_ENDSTOP_K
 #endif
 
 #if EITHER(MIN_SOFTWARE_ENDSTOPS, MAX_SOFTWARE_ENDSTOPS)
