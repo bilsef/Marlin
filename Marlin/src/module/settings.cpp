@@ -716,7 +716,7 @@ void MarlinSettings::postprocess() {
         EEPROM_WRITE(planner.bed_level_matrix);
       #else
         dummyf = 0;
-        for (uint8_t q = 9; q--;) EEPROM_WRITE(dummyf);
+        for (uint8_t q = LINEAR_AXES * 3; q--;) EEPROM_WRITE(dummyf);
       #endif
     }
 
@@ -1615,7 +1615,7 @@ void MarlinSettings::postprocess() {
         #if ABL_PLANAR
           EEPROM_READ(planner.bed_level_matrix);
         #else
-          for (uint8_t q = 9; q--;) EEPROM_READ(dummyf);
+          for (uint8_t q = LINEAR_AXES * 3; q--;) EEPROM_READ(dummyf);
         #endif
       }
 
@@ -2236,7 +2236,7 @@ void MarlinSettings::postprocess() {
           const xyz_float_t &backlash_distance_mm = backlash.distance_mm;
           const uint8_t &backlash_correction = backlash.correction;
         #else
-          float backlash_distance_mm[XYZ];
+          xyz_float_t backlash_distance_mm;
           uint8_t backlash_correction;
         #endif
         #if ENABLED(BACKLASH_GCODE) && defined(BACKLASH_SMOOTHING_MM)
