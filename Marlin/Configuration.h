@@ -88,7 +88,7 @@
 // @section info
 
 // Author info of this build printed to the host during boot and M115
-#define STRING_CONFIG_H_AUTHOR "(BR, Teensy 4.1)" // Who made the changes.
+#define STRING_CONFIG_H_AUTHOR "(BR, Teensy 4.1 6-axis, OpenPnP)" // Who made the changes.
 //#define CUSTOM_VERSION_FILE Version.h // Path from the root directory (no quotes)
 
 /**
@@ -127,7 +127,9 @@
  * Select a secondary serial port on the board to use for communication with the host.
  * :[-1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
-#define SERIAL_PORT_2 0
+#define ETHERNETSUPPORT
+
+#define SERIAL_PORT_2 -1  // select -1 for Telnet client
 
 /**
  * This setting determines the communication speed of the printer.

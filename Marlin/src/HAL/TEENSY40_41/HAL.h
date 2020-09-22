@@ -33,6 +33,7 @@
 
 #include "fastio.h"
 #include "watchdog.h"
+#include "ethernet.h"
 
 #include <stdint.h>
 #include <util/atomic.h>
@@ -78,7 +79,7 @@
   #if SERIAL_PORT_2 == SERIAL_PORT
     #error "SERIAL_PORT_2 must be different from SERIAL_PORT. Please update your configuration."
   #elif SERIAL_PORT_2 == -1
-    #define MYSERIAL1 usbSerial
+    #define MYSERIAL1 telnetClient
   #elif SERIAL_PORT_2 == 0
     #define MYSERIAL1 Serial
   #elif SERIAL_PORT_2 == 1
@@ -139,8 +140,8 @@ typedef int8_t pin_t;
 
 // Enable hooks into idle and setup for HAL
 #define HAL_IDLETASK 1
-FORCE_INLINE void HAL_idletask() {}
-FORCE_INLINE void HAL_init() {}
+void HAL_idletask();
+void HAL_init();
 
 // Clear reset reason
 void HAL_clear_reset_source();

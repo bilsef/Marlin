@@ -89,6 +89,16 @@ static const uint8_t pin2sc1a[] = {
   void sei() { interrupts(); }
 */
 
+void HAL_init() {
+//#if ENABLED(ETHERNETSUPPORT)
+  ethernet_init();
+//#endif
+}
+
+void HAL_idletask() {
+  ethernet_check();
+}
+
 void HAL_adc_init() {
   analog_init();
 }
