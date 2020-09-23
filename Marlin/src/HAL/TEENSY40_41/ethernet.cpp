@@ -24,20 +24,9 @@
 #include "../../core/serial.h"
 #include "../../inc/MarlinConfigPre.h"
 
-#if ENABLED(ETHERNETSUPPORT)
+#if ENABLED(ETHERNET_SUPPORT)
 
-#include <NativeEthernet.h>
-
-// Enter a MAC address and IP address for your controller below.
-// The IP address will be dependent on your local network.
-// gateway and subnet are optional:
-byte mac[] = {
-  0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
-};
-IPAddress ip(192, 168, 1, 177);
-IPAddress myDns(192, 168, 1, 1);
-IPAddress gateway(192, 168, 1, 1);
-IPAddress subnet(255, 255, 0, 0);
+#include "ethernet.h"
 
 EthernetServer server(23);
 
@@ -45,13 +34,31 @@ EthernetClient telnetClient;
 
 enum linkStates {UNLINKED, LINKING, LINKED, CONNECTING, CONNECTED, NO_HARDWARE} linkState;
 
-void ethernet_init() {
+byte mac[] = {
+  0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xEA
+};
+IPAddress ip;
+IPAddress myDns;
+IPAddress gateway;
+IPAddress subnet;
+
+void HAL_ethernet_init() {
 
   SERIAL_ECHO_MSG("Starting network...");
 
   // initialize the Ethernet device
-  Ethernet.begin(mac);  // use DHCP
-  //Ethernet.begin(mac, ip, myDns, gateway, subnet);
+  if (!ip) { Ethernet.begin(mac); }  // use DHCP
+  else {
+    if (!gateway) {
+      gateway = ip;
+      gateway[3] = 1;
+      myDns = gateway;
+      subnet = IPAddress(255,255,255,0);
+    }
+    if (!myDns) myDns = gateway;
+    if (!subnet) subnet = IPAddress(255,255,255,0);
+    Ethernet.begin(mac, ip, myDns, gateway, subnet);
+  }
 
   // Check for Ethernet hardware present
   if (Ethernet.hardwareStatus() == EthernetNoHardware) {
@@ -64,15 +71,10 @@ void ethernet_init() {
 
   if (Ethernet.linkStatus() == LinkOFF) {
     SERIAL_ERROR_MSG("Ethernet cable is not connected.");
-    //delay(500);
-    return;
   }
 
-  delay(100);
+  return;
 
-  server.begin();
-
-  linkState = LINKING;
 }
 
 bool newClient=0;
@@ -95,10 +97,7 @@ void ethernet_check() {
       if (!Ethernet.localIP()) break;
 
       SERIAL_ECHO("Successfully started telnet server with IP ");
-      SERIAL_ECHO((Ethernet.localIP()) & 0xFF);
-      SERIAL_ECHOPAIR(":", (Ethernet.localIP()>>8) & 0xFF);
-      SERIAL_ECHOPAIR(":", (Ethernet.localIP()>>16) & 0xFF);
-      SERIAL_ECHOLNPAIR(":", (Ethernet.localIP()>>24) & 0xFF);
+      MYSERIAL0.println(Ethernet.localIP());
 
       linkState = LINKED;
       break;
@@ -111,7 +110,6 @@ void ethernet_check() {
       }
       telnetClient = server.accept();
       if (telnetClient) {
-        SERIAL_ECHOLN("Client connected");
         linkState = CONNECTING;
       }
       break;
@@ -125,6 +123,8 @@ void ethernet_check() {
         );
       #endif
       telnetClient.println("Compiled: " __DATE__);
+
+      SERIAL_ECHOLN("Client connected");
       linkState = CONNECTED;
       break;
 
@@ -147,5 +147,5 @@ void ethernet_check() {
     return;
 }
 
-#endif // ETHERNETSUPPORT
+#endif // ETHERNET_SUPPORT
 #endif // __IMXRT1062__

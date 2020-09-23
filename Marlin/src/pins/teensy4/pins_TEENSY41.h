@@ -36,7 +36,7 @@
 #define AT90USB          1286  // Disable MarlinSerial etc.
 #define USBCON         //1286  // Disable MarlinSerial etc.
 
-#define CUSTOM_MACHINE_NAME "PnP Bed"
+#define CUSTOM_MACHINE_NAME "PnP"
 
 /*
    plan for Teensy4.0 and Teensy4.1:

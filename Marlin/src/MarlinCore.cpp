@@ -929,7 +929,7 @@ void setup() {
     MYSERIAL0.begin(BAUDRATE);
     uint32_t serial_connect_timeout = millis() + 1000UL;
     while (!MYSERIAL0 && PENDING(millis(), serial_connect_timeout)) { /*nada*/ }
-    #if HAS_MULTI_SERIAL && (MYSERIAL1 != telnetClient)
+    #if HAS_MULTI_SERIAL
       MYSERIAL1.begin(BAUDRATE);
       serial_connect_timeout = millis() + 1000UL;
       while (!MYSERIAL1 && PENDING(millis(), serial_connect_timeout)) { /*nada*/ }
@@ -1043,6 +1043,10 @@ void setup() {
 
   SETUP_RUN(settings.first_load());   // Load data from EEPROM if available (or use defaults)
                                       // This also updates variables in the planner, elsewhere
+
+  #if ENABLED(ETHERNET_SUPPORT)
+    SETUP_RUN(HAL_ethernet_init());
+  #endif
 
   #if HAS_TOUCH_XPT2046
     SETUP_RUN(touch.init());

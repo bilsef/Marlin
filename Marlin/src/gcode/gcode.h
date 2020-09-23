@@ -230,6 +230,10 @@
  * M512 - Set/Change/Remove Password
  * M524 - Abort the current SD print job started with M24. (Requires SDSUPPORT)
  * M540 - Enable/disable SD card abort on endstop hit: "M540 S<state>". (Requires SD_ABORT_ON_ENDSTOP_HIT)
+ * M552 - Set IP address, enable/disable network interface
+ * M553 - Set IP netmask
+ * M554 - Set IP gateway
+ * M557 - Get MAC address
  * M569 - Enable stealthChop on an axis. (Requires at least one _DRIVER_TYPE to be TMC2130/2160/2208/2209/5130/5160)
  * M600 - Pause for filament change: "M600 X<pos> Y<pos> Z<raise> E<first_retract> L<later_retract>". (Requires ADVANCED_PAUSE_FEATURE)
  * M603 - Configure filament change: "M603 T<tool> U<unload_length> L<load_length>". (Requires ADVANCED_PAUSE_FEATURE)
@@ -780,6 +784,12 @@ private:
   TERN_(SDSUPPORT, static void M524());
 
   TERN_(SD_ABORT_ON_ENDSTOP_HIT, static void M540());
+
+  #if ENABLED(ETHERNET_SUPPORT)
+    static void M552();
+    static void M553();
+    static void M554();
+  #endif
 
   TERN_(BAUD_RATE_GCODE, static void M575());
 

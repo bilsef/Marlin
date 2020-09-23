@@ -141,7 +141,9 @@ typedef int8_t pin_t;
 // Enable hooks into idle and setup for HAL
 #define HAL_IDLETASK 1
 void HAL_idletask();
-void HAL_init();
+inline void HAL_init() {}
+
+void HAL_ethernet_init();
 
 // Clear reset reason
 void HAL_clear_reset_source();

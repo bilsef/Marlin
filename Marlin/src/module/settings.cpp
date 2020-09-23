@@ -51,6 +51,10 @@
 #include "stepper.h"
 #include "temperature.h"
 
+#if ENABLED(ETHERNET_SUPPORT)
+#include "../HAL/TEENSY40_41/ethernet.h"
+#endif
+
 #if ENABLED(DWIN_CREALITY_LCD)
   #include "../lcd/dwin/e3v2/dwin.h"
 #endif
@@ -176,6 +180,14 @@ extern const char SP_X_STR[], SP_Y_STR[], SP_Z_STR[], SP_I_STR[], SP_J_STR[], SP
 typedef struct SettingsDataStruct {
   char      version[4];                                 // Vnn\0
   uint16_t  crc;                                        // Data Checksum
+
+  // Ethernet settings
+#if ENABLED(ETHERNET_SUPPORT)
+  uint32_t ip_address;
+  uint32_t myDns_address;
+  uint32_t gateway_address;
+  uint32_t subnet_mask;
+#endif
 
   //
   // DISTINCT_E_FACTORS
@@ -587,6 +599,21 @@ void MarlinSettings::postprocess() {
     EEPROM_SKIP(working_crc); // Skip the checksum slot
 
     working_crc = 0; // clear before first "real data"
+
+    #if ENABLED(ETHERNET_SUPPORT)
+      _FIELD_TEST(ip_address);
+      uint32_t ip_address = ip;
+      EEPROM_WRITE(ip_address);
+      _FIELD_TEST(myDns_address);
+      uint32_t myDns_address = myDns;
+      EEPROM_WRITE(myDns_address);
+      _FIELD_TEST(gateway_address);
+      uint32_t gateway_address = gateway;
+      EEPROM_WRITE(gateway_address);
+      uint32_t subnet_mask = subnet;
+      _FIELD_TEST(subnet_mask);
+      EEPROM_WRITE(subnet_mask);
+    #endif
 
     const uint8_t esteppers = NUM_AXIS_N - LINEAR_AXES;
     _FIELD_TEST(esteppers);
@@ -1472,6 +1499,29 @@ void MarlinSettings::postprocess() {
     else {
       float dummyf = 0;
       working_crc = 0;  // Init to 0. Accumulated by EEPROM_READ
+
+      #if ENABLED(ETHERNET_SUPPORT)
+        _FIELD_TEST(ip_address);
+        EEPROM_READ(ip[0]);
+        EEPROM_READ(ip[1]);
+        EEPROM_READ(ip[2]);
+        EEPROM_READ(ip[3]);
+        _FIELD_TEST(myDns_address);
+        EEPROM_READ(myDns[0]);
+        EEPROM_READ(myDns[1]);
+        EEPROM_READ(myDns[2]);
+        EEPROM_READ(myDns[3]);
+        _FIELD_TEST(gateway_address);
+        EEPROM_READ(gateway[0]);
+        EEPROM_READ(gateway[1]);
+        EEPROM_READ(gateway[2]);
+        EEPROM_READ(gateway[3]);
+        _FIELD_TEST(subnet_mask);
+        EEPROM_READ(subnet[0]);
+        EEPROM_READ(subnet[1]);
+        EEPROM_READ(subnet[2]);
+        EEPROM_READ(subnet[3]);
+      #endif
 
       _FIELD_TEST(esteppers);
 

@@ -23,7 +23,15 @@
 
 #include <NativeEthernet.h>
 
+// Enter a MAC address and IP address for your controller below.
+// The IP address will be dependent on your local network.
+// gateway and subnet are optional:
+extern IPAddress ip;
+extern IPAddress myDns;
+extern IPAddress gateway;
+extern IPAddress subnet;
+
 extern EthernetClient telnetClient;
 
-void ethernet_init();
+void HAL_ethernet_init();
 void ethernet_check();
