@@ -312,15 +312,23 @@ void GCodeQueue::flush_and_request_resend() {
 }
 
 inline bool serial_data_available() {
-  return MYSERIAL0.available() || TERN0(HAS_MULTI_SERIAL, MYSERIAL1.available());
+  return MYSERIAL0.available() \
+  || TERN0(HAS_MULTI_SERIAL, MYSERIAL1.available()) \
+  || TERN0(have_telnet_client, telnetClient.available());
 }
 
 inline int read_serial(const uint8_t index) {
   switch (index) {
-    case 0: return MYSERIAL0.read();
-    #if HAS_MULTI_SERIAL
-      case 1: return MYSERIAL1.read();
-    #endif
+    case 0: 
+      return MYSERIAL0.read();
+    case 1:
+      return MYSERIAL1.read();
+    case 2: 
+      if (have_telnet_client)
+        return telnetClient.read();
+      else
+        return -1;
+      break;
     default: return -1;
   }
 }

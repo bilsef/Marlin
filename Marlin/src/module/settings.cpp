@@ -155,6 +155,12 @@
   #include "../lcd/tft/touch.h"
 #endif
 
+#if ENABLED(ETHERNET_SUPPORT)
+  void M552_report();
+  void M553_report();
+  void M554_report();
+#endif
+
 #pragma pack(push, 1) // No padding between variables
 typedef struct { uint16_t LIST_N(LINEAR_AXES, X, Y, Z, I, J, K), X2, Y2, Z2, Z3, Z4, E0, E1, E2, E3, E4, E5, E6, E7; } tmc_stepper_current_t;
 typedef struct { uint32_t LIST_N(LINEAR_AXES, X, Y, Z, I, J, K), X2, Y2, Z2, Z3, Z4, E0, E1, E2, E3, E4, E5, E6, E7; } tmc_hybrid_threshold_t;
@@ -183,6 +189,7 @@ typedef struct SettingsDataStruct {
 
   // Ethernet settings
 #if ENABLED(ETHERNET_SUPPORT)
+  bool use_ethernet;
   uint32_t ip_address;
   uint32_t myDns_address;
   uint32_t gateway_address;
@@ -601,6 +608,9 @@ void MarlinSettings::postprocess() {
     working_crc = 0; // clear before first "real data"
 
     #if ENABLED(ETHERNET_SUPPORT)
+      _FIELD_TEST(use_ethernet);
+      bool use_ethernet = ethernet_hardware_enabled;
+      EEPROM_WRITE(use_ethernet);
       _FIELD_TEST(ip_address);
       uint32_t ip_address = ip;
       EEPROM_WRITE(ip_address);
@@ -1501,6 +1511,8 @@ void MarlinSettings::postprocess() {
       working_crc = 0;  // Init to 0. Accumulated by EEPROM_READ
 
       #if ENABLED(ETHERNET_SUPPORT)
+        _FIELD_TEST(use_ethernet);
+        EEPROM_READ(ethernet_hardware_enabled);
         _FIELD_TEST(ip_address);
         EEPROM_READ(ip[0]);
         EEPROM_READ(ip[1]);
@@ -3971,6 +3983,25 @@ void MarlinSettings::reset() {
           , " D", LINEAR_UNIT(runout.runout_distance())
         #endif
       );
+    #endif
+
+    #if ENABLED(ETHERNET_SUPPORT)
+      CONFIG_ECHO_HEADING("Ethernet Settings:");
+      CONFIG_ECHO_START();
+      SERIAL_ECHO("  Ethernet ");
+      if (ethernet_hardware_enabled)
+        SERIAL_ECHOLN("enabled");
+      else
+        SERIAL_ECHOLN("disabled");
+      CONFIG_ECHO_START();
+      SERIAL_ECHO("  M552 ");
+      M552_report();
+      CONFIG_ECHO_START();
+      SERIAL_ECHO("  M553 ");
+      M553_report();
+      CONFIG_ECHO_START();
+      SERIAL_ECHO("  M554 ");
+      M554_report();
     #endif
   }
 

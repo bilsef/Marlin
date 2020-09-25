@@ -79,7 +79,7 @@
   #if SERIAL_PORT_2 == SERIAL_PORT
     #error "SERIAL_PORT_2 must be different from SERIAL_PORT. Please update your configuration."
   #elif SERIAL_PORT_2 == -1
-    #define MYSERIAL1 telnetClient
+    #define MYSERIAL1 SerialUSB
   #elif SERIAL_PORT_2 == 0
     #define MYSERIAL1 Serial
   #elif SERIAL_PORT_2 == 1
@@ -101,7 +101,11 @@
   #else
       #error "SERIAL_PORT_2 must be from -1 to 8. Please update your configuration."
   #endif
-  #define NUM_SERIAL 2
+  #if ENABLED(ETHERNET_SUPPORT)
+    #define NUM_SERIAL 3
+  #elif
+    #define NUM_SERIAL 2
+  #endif
 #else
   #define NUM_SERIAL 1
 #endif

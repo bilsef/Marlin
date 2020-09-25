@@ -31,7 +31,11 @@ extern IPAddress myDns;
 extern IPAddress gateway;
 extern IPAddress subnet;
 
+extern bool ethernet_hardware_enabled;
+extern bool have_telnet_client;
+
 extern EthernetClient telnetClient;
 
 void HAL_ethernet_init();
 void ethernet_check();
+void ethernet_reset();

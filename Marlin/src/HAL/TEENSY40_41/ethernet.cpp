@@ -42,7 +42,11 @@ IPAddress myDns;
 IPAddress gateway;
 IPAddress subnet;
 
+bool ethernet_hardware_enabled = false; // from EEPROM
+bool have_telnet_client = false;
+
 void HAL_ethernet_init() {
+  if (!ethernet_hardware_enabled) return;
 
   SERIAL_ECHO_MSG("Starting network...");
 
@@ -79,6 +83,7 @@ void HAL_ethernet_init() {
 
 bool newClient=0;
 void ethernet_check() {
+  if (!ethernet_hardware_enabled) return;
 
   switch (linkState) {
     case NO_HARDWARE:
@@ -125,6 +130,7 @@ void ethernet_check() {
       telnetClient.println("Compiled: " __DATE__);
 
       SERIAL_ECHOLN("Client connected");
+      have_telnet_client = true;
       linkState = CONNECTED;
       break;
 
@@ -132,6 +138,7 @@ void ethernet_check() {
       if (telnetClient && !telnetClient.connected()) {
         SERIAL_ECHOLN("Client disconnected");
         telnetClient.stop();
+        have_telnet_client = false;
         linkState = LINKED;
       }
       if (Ethernet.linkStatus() == LinkOFF) {

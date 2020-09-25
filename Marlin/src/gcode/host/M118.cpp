@@ -54,7 +54,9 @@ void GcodeSuite::M118() {
 
   #if HAS_MULTI_SERIAL
     const int8_t old_serial = serial_port_index;
-    if (WITHIN(port, 0, NUM_SERIAL))
+    if (WITHIN(port, 0, NUM_SERIAL-1))
+      serial_port_index = port;
+/*
       serial_port_index = (
         port == 0 ? SERIAL_BOTH
         : port == 1 ? SERIAL_PORT
@@ -63,6 +65,7 @@ void GcodeSuite::M118() {
         #endif
         : SERIAL_PORT
       );
+*/
   #endif
 
   if (hasE) SERIAL_ECHO_START();

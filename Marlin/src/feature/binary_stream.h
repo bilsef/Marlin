@@ -33,8 +33,10 @@ inline bool bs_serial_data_available(const uint8_t index) {
   switch (index) {
     case 0: return MYSERIAL0.available();
     #if HAS_MULTI_SERIAL
-      case 1: return MYSERIAL1.available();
+      case 1: return telnetClient.available();
     #endif
+    case 2:
+        if (have_telnet_client) return MYSERIAL1.available();
   }
   return false;
 }
@@ -45,6 +47,7 @@ inline int bs_read_serial(const uint8_t index) {
     #if HAS_MULTI_SERIAL
       case 1: return MYSERIAL1.read();
     #endif
+    case 2: if (have_telnet_client) return telnetClient.read();
   }
   return -1;
 }
