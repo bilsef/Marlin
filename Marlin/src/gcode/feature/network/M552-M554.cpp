@@ -129,9 +129,11 @@ void M554_report() {
     SERIAL_ECHO("  Ethernet hardware ");
     if (ethernet_hardware_enabled)
       SERIAL_ECHOLN("enabled");
-    else
+    else {
       SERIAL_ECHOLN("disabled");
-
+      SERIAL_ECHOLN("Send M552 S1 to enable");
+    }
+    
     SERIAL_ECHO("  Ethernet port ");
     if (have_telnet_client)
       SERIAL_ECHOLN("enabled");

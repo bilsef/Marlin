@@ -34,9 +34,8 @@ EthernetClient telnetClient;
 
 enum linkStates {UNLINKED, LINKING, LINKED, CONNECTING, CONNECTED, NO_HARDWARE} linkState;
 
-byte mac[] = {
-  0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xEA
-};
+byte mac[] = { MAC_ADDRESS };
+
 IPAddress ip;
 IPAddress myDns;
 IPAddress gateway;
