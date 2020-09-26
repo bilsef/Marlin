@@ -121,13 +121,13 @@
  *
  * :[-1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
-#define SERIAL_PORT 5
+#define SERIAL_PORT 0
 
 /**
  * Select a secondary serial port on the board to use for communication with the host.
  * :[-1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
-#define SERIAL_PORT_2 0  // select -1 for Telnet client
+#define SERIAL_PORT_2 5  // select -1 for Telnet client
 
 /**
  * This setting determines the communication speed of the printer.

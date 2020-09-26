@@ -106,7 +106,7 @@ void M554_report() {
 //
 // M552: Set IP address, enable/disable network interface
 //      Pnnn IP address, 0.0.0.0 means acquire an IP address using DHCP
-//      Snnn (optional) -1 = reset network interface, 0 = disable networking, 1 = enable networking as a client
+//      Snnn (optional) -1 = reset network interface, 0 = disable networking, 1 = enable networking
 
   void GcodeSuite::M552() {
     if (parser.seenval('P')) ip.fromString(parser.value_string());
@@ -133,7 +133,7 @@ void M554_report() {
       SERIAL_ECHOLN("disabled");
       SERIAL_ECHOLN("Send M552 S1 to enable");
     }
-    
+
     SERIAL_ECHO("  Ethernet port ");
     if (have_telnet_client)
       SERIAL_ECHOLN("enabled");
