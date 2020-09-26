@@ -140,7 +140,7 @@
  */
 #define BAUDRATE 115200
 
-// Enable the Ethernet interface on Teensy 4 devices (must have SERIAL_PORT_2 defined)
+// Enable the Ethernet interface on Teensy 4.1 (must have SERIAL_PORT_2 defined also)
 // The IP address can be set, and ethernet enabled with M552
 #define ETHERNET_SUPPORT
 // MAC_ADDRESS must be unique on your network.  Recommend changing the last two bytes.
