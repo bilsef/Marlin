@@ -25,6 +25,12 @@
 
 #include HAL_PATH(.,HAL.h)
 
+#if defined(SERIAL_PORT_2) || defined(ETHERNET_SUPPORT)
+  #define NUM_SERIAL 2
+#else
+  #define NUM_SERIAL 1
+#endif
+
 #define HAL_ADC_RANGE _BV(HAL_ADC_RESOLUTION)
 
 #ifndef I2C_ADDRESS

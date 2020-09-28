@@ -23,6 +23,10 @@
 
 #include "../inc/MarlinConfig.h"
 
+#if ENABLED(ETHERNET_SUPPORT)
+  #include "../feature/ethernet.h"
+#endif
+
 /**
  * Define debug bit-masks
  */
@@ -55,11 +59,19 @@ extern uint8_t marlin_debug_flags;
   #ifdef SERIAL_CATCHALL
     #define SERIAL_OUT(WHAT, V...) (void)CAT(MYSERIAL,SERIAL_CATCHALL).WHAT(V)
   #else
-    #define SERIAL_OUT(WHAT, V...) do{ \
-      if (serial_port_index == 0) (void)MYSERIAL0.WHAT(V); \
-      if (serial_port_index == 1) (void)MYSERIAL1.WHAT(V); \
-      if (serial_port_index == 2) (void)telnetClient.WHAT(V); \
-    }while(0)
+    #ifdef ETHERNET_SUPPORT
+      #define SERIAL_OUT(WHAT, V...) do{ \
+        if (serial_port_index == 0) (void)MYSERIAL0.WHAT(V); \
+        if (serial_port_index == 1) (void)telnetClient.WHAT(V); \
+        if (serial_port_index == SERIAL_BOTH) {(void)MYSERIAL0.WHAT(V); (void)telnetClient.WHAT(V); } \
+      }while(0)
+    #else
+      #define SERIAL_OUT(WHAT, V...) do{ \
+        if (serial_port_index == 0) (void)MYSERIAL0.WHAT(V); \
+        if (serial_port_index == 1) (void)MYSERIAL1.WHAT(V); \
+        if (serial_port_index == SERIAL_BOTH) {(void)MYSERIAL0.WHAT(V); (void)MYSERIAL1.WHAT(V); } \
+      }while(0)
+    #endif
   #endif
 
   #define SERIAL_ASSERT(P)      if(serial_port_index!=(P)){ debugger(); }
@@ -318,14 +330,11 @@ void serialprint_truefalse(const bool tf);
 void serial_spaces(uint8_t count);
 
 void print_bin(const uint16_t val);
-void print_pos(
-  LIST_N(LINEAR_AXES, const float &x, const float &y, const float &z, const float &i, const float &j, const float &k),
-  PGM_P const prefix=nullptr, PGM_P const suffix=nullptr
-);
+void print_xyz(const float &x, const float &y, const float &z, PGM_P const prefix=nullptr, PGM_P const suffix=nullptr);
 
-inline void print_pos(const xyz_pos_t &xyz, PGM_P const prefix=nullptr, PGM_P const suffix=nullptr) {
-  print_pos(LIST_N(LINEAR_AXES, xyz.x, xyz.y, xyz.z, xyz.i, xyz.j, xyz.k), prefix, suffix);
+inline void print_xyz(const xyz_pos_t &xyz, PGM_P const prefix=nullptr, PGM_P const suffix=nullptr) {
+  print_xyz(xyz.x, xyz.y, xyz.z, prefix, suffix);
 }
 
-#define SERIAL_POS(SUFFIX,VAR) do { print_pos(VAR, PSTR("  " STRINGIFY(VAR) "="), PSTR(" : " SUFFIX "\n")); }while(0)
-#define SERIAL_XYZ(PREFIX,V...) do { print_pos(V, PSTR(PREFIX), nullptr); }while(0)
+#define SERIAL_POS(SUFFIX,VAR) do { print_xyz(VAR, PSTR("  " STRINGIFY(VAR) "="), PSTR(" : " SUFFIX "\n")); }while(0)
+#define SERIAL_XYZ(PREFIX,V...) do { print_xyz(V, PSTR(PREFIX), nullptr); }while(0)

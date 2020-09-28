@@ -127,7 +127,7 @@
  * Select a secondary serial port on the board to use for communication with the host.
  * :[-1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
-#define SERIAL_PORT_2 5  // select -1 for Telnet client
+//#define SERIAL_PORT_2 5
 
 /**
  * This setting determines the communication speed of the printer.
@@ -140,10 +140,11 @@
  */
 #define BAUDRATE 115200
 
-// Enable the Ethernet interface on Teensy 4.1 (must have SERIAL_PORT_2 defined also)
+// Enable the Ethernet interface (must have SERIAL_PORT_2 undefined)
+// Currently only supported on Teensy 4.1 boards
 // The IP address can be set, and ethernet enabled with M552
 #define ETHERNET_SUPPORT
-// MAC_ADDRESS must be unique on your network.  Recommend changing the last two bytes.
+// MAC_ADDRESS must be unique on your network.
 #define MAC_ADDRESS 0xDE, 0xAD, 0xBE, 0xEF, 0xBA, 0xAD
 
 // Enable the Bluetooth serial interface on AT90USB devices

@@ -19,18 +19,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-#ifdef __IMXRT1062__
 
-#include "../../core/serial.h"
-#include "../../inc/MarlinConfigPre.h"
+#include "../core/serial.h"
+#include "../inc/MarlinConfigPre.h"
 
 #if ENABLED(ETHERNET_SUPPORT)
 
 #include "ethernet.h"
 
-EthernetServer server(23);
+EthernetServer server(23);    // telnet server
 
-EthernetClient telnetClient;
+EthernetClient telnetClient;  // connected client
 
 enum linkStates {UNLINKED, LINKING, LINKED, CONNECTING, CONNECTED, NO_HARDWARE} linkState;
 
@@ -44,7 +43,7 @@ IPAddress subnet;
 bool ethernet_hardware_enabled = false; // from EEPROM
 bool have_telnet_client = false;
 
-void HAL_ethernet_init() {
+void ethernet_init() {
   if (!ethernet_hardware_enabled) return;
 
   SERIAL_ECHO_MSG("Starting network...");
@@ -154,4 +153,3 @@ void ethernet_check() {
 }
 
 #endif // ETHERNET_SUPPORT
-#endif // __IMXRT1062__

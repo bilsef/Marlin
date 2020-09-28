@@ -21,21 +21,21 @@
  */
 #pragma once
 
-#include <NativeEthernet.h>
+#include "../inc/MarlinConfig.h"
 
-// Enter a MAC address and IP address for your controller below.
-// The IP address will be dependent on your local network.
-// gateway and subnet are optional:
-extern IPAddress ip;
-extern IPAddress myDns;
-extern IPAddress gateway;
-extern IPAddress subnet;
+#ifdef ETHERNET_SUPPORT
 
-extern bool ethernet_hardware_enabled;
-extern bool have_telnet_client;
+#ifdef __IMXRT1062__
+    #include <NativeEthernet.h>
+#endif
+
+extern IPAddress ip, myDns, gateway, subnet;
+
+extern bool ethernet_hardware_enabled, have_telnet_client;
 
 extern EthernetClient telnetClient;
 
-void HAL_ethernet_init();
+void ethernet_init();
 void ethernet_check();
-void ethernet_reset();
+
+#endif  // ETHERNET_SUPPORT

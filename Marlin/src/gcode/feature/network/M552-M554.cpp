@@ -24,83 +24,36 @@
 
 #if ENABLED(ETHERNET_SUPPORT)
 
-//#include "../../../feature/network/ethernet.h"
-#include "../../../HAL/TEENSY40_41/ethernet.h"
+#include "../../../feature/ethernet.h"
 #include "../../../core/serial.h"
 #include "../../gcode.h"
 
 void M552_report() {
-  SERIAL_ECHO("ip address: ");
-  if (Ethernet.linkStatus() == LinkON) {
-    switch (serial_port_index) {
-      case 0: Ethernet.localIP().printTo(MYSERIAL0);
-        break;
-      case 1: Ethernet.localIP().printTo(MYSERIAL1);
-        break;
-      case 2: if (have_telnet_client) Ethernet.localIP().printTo(telnetClient);
-        break;
-    }
-  }
-  else {
-    switch (serial_port_index) {
-      case 0: ip.printTo(MYSERIAL0);
-        break;
-      case 1: ip.printTo(MYSERIAL1);
-        break;
-      case 2: if (have_telnet_client) ip.printTo(telnetClient);
-        break;
-    }
-  }
-  if (!ip) SERIAL_ECHO(" (DHCP)");
-  SERIAL_EOL();
+  IPAddress thisip;
+  if (Ethernet.linkStatus() == LinkON)
+    thisip = Ethernet.localIP();        // display current value if link is active
+  else
+    thisip = ip;                        // otherwise show the EEPROM value
+
+  SERIAL_ECHOLNPAIR("ip address: ", thisip[0], ".", thisip[1], ".", thisip[2], ".", thisip[3]);
 }
 void M553_report() {
-  SERIAL_ECHO("subnet mask: ");
-  if (Ethernet.linkStatus() == LinkON) {
-    switch (serial_port_index) {
-      case 0: Ethernet.subnetMask().printTo(MYSERIAL0);
-        break;
-      case 1: Ethernet.subnetMask().printTo(MYSERIAL1);
-        break;
-      case 2: if (have_telnet_client) Ethernet.subnetMask().printTo(telnetClient);
-        break;
-    }
-  }
-  else {
-    switch (serial_port_index) {
-      case 0: subnet.printTo(MYSERIAL0);
-        break;
-      case 1: subnet.printTo(MYSERIAL1);
-        break;
-      case 2: if (have_telnet_client) subnet.printTo(telnetClient);
-        break;
-    }
-  }
-  SERIAL_EOL();
+  IPAddress thisip;
+  if (Ethernet.linkStatus() == LinkON)
+    thisip = Ethernet.subnetMask();
+  else
+    thisip = subnet;
+
+  SERIAL_ECHOLNPAIR("subnet mask: ", thisip[0], ".", thisip[1], ".", thisip[2], ".", thisip[3]);
 }
 void M554_report() {
-  SERIAL_ECHO("gateway address: ");
-  if (Ethernet.linkStatus() == LinkON) {
-    switch (serial_port_index) {
-      case 0: Ethernet.gatewayIP().printTo(MYSERIAL0);
-        break;
-      case 1: Ethernet.gatewayIP().printTo(MYSERIAL1);
-        break;
-      case 2: if (have_telnet_client) Ethernet.gatewayIP().printTo(telnetClient);
-        break;
-    }
-  }
-  else {
-    switch (serial_port_index) {
-      case 0: gateway.printTo(MYSERIAL0);
-        break;
-      case 1: gateway.printTo(MYSERIAL1);
-        break;
-      case 2: if (have_telnet_client) gateway.printTo(telnetClient);
-        break;
-    }
-  }
-  SERIAL_EOL();
+  IPAddress thisip;
+  if (Ethernet.linkStatus() == LinkON)
+    thisip = Ethernet.gatewayIP();
+  else
+    thisip = gateway;
+
+  SERIAL_ECHOLNPAIR("gateway address: ", thisip[0], ".", thisip[1], ".", thisip[2], ".", thisip[3]);
 }
 
 //
@@ -115,7 +68,7 @@ void M554_report() {
     if (parser.seenval('S')) switch (parser.value_int()) {
       case -1:
         if (telnetClient) telnetClient.stop();
-        HAL_ethernet_init();
+        ethernet_init();
         break;
       case 0:
         ethernet_hardware_enabled = false;
