@@ -51,10 +51,6 @@
 #include "stepper.h"
 #include "temperature.h"
 
-#if ENABLED(ETHERNET_SUPPORT)
-#include "../HAL/TEENSY40_41/ethernet.h"
-#endif
-
 #if ENABLED(DWIN_CREALITY_LCD)
   #include "../lcd/dwin/e3v2/dwin.h"
 #endif

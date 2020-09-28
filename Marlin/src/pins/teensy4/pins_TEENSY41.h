@@ -65,6 +65,7 @@
       Z_STEP_PIN                           30 |               | 35          TX8         OUT_4
       C_ENABLE_PIN                         31 |    SDCARD     | 34          RX8         OUT_3
       OUT_1                                32 |_______________| 33     PWM              OUT_2
+*/
 
 //
 // Servos
