@@ -2111,7 +2111,7 @@ bool Planner::_populate_block(block_t * const block, bool split_move,
     block->e_to_p_pressure = baricuda_e_to_p_pressure;
   #endif
 
-  #if EXTRUDERS > 1
+  #if HAS_MULTI_EXTRUDER
     block->extruder = extruder;
   #endif
 
@@ -3048,7 +3048,7 @@ bool Planner::buffer_line(const float &rx, const float &ry, const float &rz
       FANS_LOOP(i) block->fan_speed[i] = thermalManager.fan_speed[i];
     #endif
 
-    #if EXTRUDERS > 1
+    #if HAS_MULTI_EXTRUDER
       block->extruder = extruder;
     #endif
 

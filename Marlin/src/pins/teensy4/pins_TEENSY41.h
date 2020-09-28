@@ -27,7 +27,7 @@
 * https://www.pjrc.com/teensy/teensyduino.html
 ****************************************************************************************/
 
-#if !IS_32BIT_TEENSY || !IS_TEENSY41
+#if NOT_TARGET(IS_32BIT_TEENSY) || NOT_TARGET(IS_TEENSY41)
   #error "Oops! Select 'Teensy 4.1' in 'Tools > Board.'"
 #else
   #define BOARD_INFO_NAME "Teensy4.1"
@@ -66,8 +66,11 @@
       C_ENABLE_PIN                         31 |    SDCARD     | 34          RX8         OUT_3
       OUT_1                                32 |_______________| 33     PWM              OUT_2
 
- 
-*/
+//
+// Servos
+//
+#define SERVO0_PIN                            22
+#define SERVO1_PIN                            23
 
 //
 // Limit Switches
@@ -126,14 +129,19 @@
 //  #define FAN_PIN                             29
 #endif
 
+//
+// Temperature Sensors
+//
 #define TEMP_0_PIN                             2  // Extruder / Analog pin numbering: 2 => A2
-#define TEMP_1_PIN                             0
-#define TEMP_BED_PIN                           1  // Bed / Analog pin numbering
+#define TEMP_1_PIN                             3
+#define TEMP_BED_PIN                           4  // Bed / Analog pin numbering
 
-#define LED_PIN                               13
+//
+// Misc. Functions
+//
+#define LED_PIN                               32
+#define SOL0_PIN                              34
 //#define PS_ON_PIN                              1
-//#define ALARM_PIN                             -1
-
 //#define FILWIDTH_PIN                           6  // A6
 //#define SOL0_PIN                              28
 #define SERVO0_PIN                            22
@@ -146,3 +154,5 @@
 #ifndef SDCARD_CONNECTION
   #define SDCARD_CONNECTION              ONBOARD
 #endif
+
+#define SDSS                                  19
