@@ -53,7 +53,6 @@ inline int bs_read_serial(const uint8_t index) {
         case 1: return MYSERIAL1.read();
       #endif
     #endif
-    case 2: if (have_telnet_client) return telnetClient.read();
   }
   return -1;
 }
