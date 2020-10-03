@@ -29,6 +29,9 @@
     #include <NativeEthernet.h>
 #endif
 
+// MAC_ADDRESS must be unique on your network.
+//#define MAC_ADDRESS 0xDE, 0xAD, 0xBE, 0xEF, 0xBA, 0xAD
+
 extern IPAddress ip, myDns, gateway, subnet;
 
 extern bool ethernet_hardware_enabled, have_telnet_client;

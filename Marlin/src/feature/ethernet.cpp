@@ -33,7 +33,21 @@ EthernetClient telnetClient;  // connected client
 
 enum linkStates {UNLINKED, LINKING, LINKED, CONNECTING, CONNECTED, NO_HARDWARE} linkState;
 
-byte mac[] = { MAC_ADDRESS };
+#ifdef __IMXRT1062__
+  static void teensyMAC(uint8_t *mac) {
+    uint32_t m1 = HW_OCOTP_MAC1;
+    uint32_t m2 = HW_OCOTP_MAC0;
+    mac[0] = m1 >> 8;
+    mac[1] = m1 >> 0;
+    mac[2] = m2 >> 24;
+    mac[3] = m2 >> 16;
+    mac[4] = m2 >> 8;
+    mac[5] = m2 >> 0;
+  }
+
+#else
+  byte mac[] = { MAC_ADDRESS };
+#endif
 
 IPAddress ip;
 IPAddress myDns;
@@ -49,6 +63,10 @@ void ethernet_init() {
   SERIAL_ECHO_MSG("Starting network...");
 
   // initialize the Ethernet device
+  #ifdef __IMXRT1062__
+    uint8_t mac[6];
+    teensyMAC(mac);
+  #endif
   if (!ip) { Ethernet.begin(mac); }  // use DHCP
   else {
     if (!gateway) {
@@ -61,6 +79,16 @@ void ethernet_init() {
     if (!subnet) subnet = IPAddress(255,255,255,0);
     Ethernet.begin(mac, ip, myDns, gateway, subnet);
   }
+
+/*
+  SERIAL_ECHO("Ethernet MAC ");
+  MYSERIAL0.print(mac[0],HEX); MYSERIAL0.print(':');
+  MYSERIAL0.print(mac[1],HEX); MYSERIAL0.print(':');
+  MYSERIAL0.print(mac[2],HEX); MYSERIAL0.print(':');
+  MYSERIAL0.print(mac[3],HEX); MYSERIAL0.print(':');
+  MYSERIAL0.print(mac[4],HEX); MYSERIAL0.print(':');
+  MYSERIAL0.println(mac[5],HEX);
+*/
 
   // Check for Ethernet hardware present
   if (Ethernet.hardwareStatus() == EthernetNoHardware) {

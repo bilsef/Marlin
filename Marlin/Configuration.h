@@ -143,15 +143,6 @@
 // Currently only supported on Teensy 4.1 boards
 // The IP address can be set, and ethernet enabled with M552
 #define ETHERNET_SUPPORT
-// MAC_ADDRESS must be unique on your network.
-#define MAC_ADDRESS 0xDE, 0xAD, 0xBE, 0xEF, 0xBA, 0xAD
-
-// Enable the Ethernet interface (must have SERIAL_PORT_2 undefined)
-// Currently only supported on Teensy 4.1 boards
-// The IP address can be set, and ethernet enabled with M552
-//#define ETHERNET_SUPPORT
-// MAC_ADDRESS must be unique on your network.
-#define MAC_ADDRESS 0xDE, 0xAD, 0xBE, 0xEF, 0xBA, 0xAD
 
 // Enable the Bluetooth serial interface on AT90USB devices
 //#define BLUETOOTH
