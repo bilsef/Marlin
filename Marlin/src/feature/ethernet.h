@@ -31,6 +31,7 @@
 
 // MAC_ADDRESS must be unique on your network.
 //#define MAC_ADDRESS 0xDE, 0xAD, 0xBE, 0xEF, 0xBA, 0xAD
+// Teensy 4.1 uses internal MAC Address
 
 extern IPAddress ip, myDns, gateway, subnet;
 
