@@ -151,6 +151,7 @@
 #endif
 
 #if ENABLED(ETHERNET_SUPPORT)
+  void MAC_report();
   void M552_report();
   void M553_report();
   void M554_report();
@@ -3990,6 +3991,9 @@ void MarlinSettings::reset() {
       else
         SERIAL_ECHOLN("disabled");
       CONFIG_ECHO_START();
+      SERIAL_ECHO("  ");
+      MAC_report();
+      CONFIG_ECHO_START();
       SERIAL_ECHO("  M552 ");
       M552_report();
       CONFIG_ECHO_START();
@@ -3998,7 +4002,7 @@ void MarlinSettings::reset() {
       CONFIG_ECHO_START();
       SERIAL_ECHO("  M554 ");
       M554_report();
-    #endif
+    #endif // ETHERNET
   }
 
 #endif // !DISABLE_M503

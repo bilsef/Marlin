@@ -80,16 +80,6 @@ void ethernet_init() {
     Ethernet.begin(mac, ip, myDns, gateway, subnet);
   }
 
-/*
-  SERIAL_ECHO("Ethernet MAC ");
-  MYSERIAL0.print(mac[0],HEX); MYSERIAL0.print(':');
-  MYSERIAL0.print(mac[1],HEX); MYSERIAL0.print(':');
-  MYSERIAL0.print(mac[2],HEX); MYSERIAL0.print(':');
-  MYSERIAL0.print(mac[3],HEX); MYSERIAL0.print(':');
-  MYSERIAL0.print(mac[4],HEX); MYSERIAL0.print(':');
-  MYSERIAL0.println(mac[5],HEX);
-*/
-
   // Check for Ethernet hardware present
   if (Ethernet.hardwareStatus() == EthernetNoHardware) {
     SERIAL_ERROR_MSG("Ethernet hardware was not found.  Sorry, can't run without hardware. :(");
