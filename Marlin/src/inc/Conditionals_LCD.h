@@ -755,19 +755,7 @@
   #define GRID_LOOP(A,B) LOOP_L_N(A, GRID_MAX_POINTS_X) LOOP_L_N(B, GRID_MAX_POINTS_Y)
 #endif
 
-#ifndef INVERT_X_DIR
-  #define INVERT_X_DIR false
-#endif
-#ifndef INVERT_Y_DIR
-  #define INVERT_Y_DIR false
-#endif
-#ifndef INVERT_Z_DIR
-  #define INVERT_Z_DIR false
-#endif
-#ifndef INVERT_E_DIR
-  #define INVERT_E_DIR false
-#endif
-
+// Slim menu optimizations
 #if ENABLED(SLIM_LCD_MENUS)
   #define BOOT_MARLIN_LOGO_SMALL
 #endif
@@ -786,12 +774,96 @@
   #define HAS_CLASSIC_E_JERK 1
 #endif
 
-#ifndef SPI_SPEED
-  #define SPI_SPEED SPI_FULL_SPEED
-#endif
-
 #if SERIAL_PORT == -1 || SERIAL_PORT_2 == -1
   #define HAS_USB_SERIAL 1
+#endif
+#if SERIAL_PORT_2 == -2
+  #define HAS_ETHERNET 1
+#endif
+
+// Fallback Stepper Driver types that don't depend on Configuration_adv.h
+#ifndef X_DRIVER_TYPE
+  #define X_DRIVER_TYPE  A4988
+#endif
+#ifndef X2_DRIVER_TYPE
+  #define X2_DRIVER_TYPE A4988
+#endif
+#ifndef Y_DRIVER_TYPE
+  #define Y_DRIVER_TYPE  A4988
+#endif
+#ifndef Y2_DRIVER_TYPE
+  #define Y2_DRIVER_TYPE A4988
+#endif
+#ifndef Z_DRIVER_TYPE
+  #define Z_DRIVER_TYPE  A4988
+#endif
+#ifndef Z2_DRIVER_TYPE
+  #define Z2_DRIVER_TYPE A4988
+#endif
+#ifndef Z3_DRIVER_TYPE
+  #define Z3_DRIVER_TYPE A4988
+#endif
+#ifndef Z4_DRIVER_TYPE
+  #define Z4_DRIVER_TYPE A4988
+#endif
+#if E_STEPPERS <= 0
+  #undef E0_DRIVER_TYPE
+#elif !defined(E0_DRIVER_TYPE)
+  #define E0_DRIVER_TYPE A4988
+#endif
+#if E_STEPPERS <= 1
+  #undef E1_DRIVER_TYPE
+#elif !defined(E1_DRIVER_TYPE)
+  #define E1_DRIVER_TYPE A4988
+#endif
+#if E_STEPPERS <= 2
+  #undef E2_DRIVER_TYPE
+#elif !defined(E2_DRIVER_TYPE)
+  #define E2_DRIVER_TYPE A4988
+#endif
+#if E_STEPPERS <= 3
+  #undef E3_DRIVER_TYPE
+#elif !defined(E3_DRIVER_TYPE)
+  #define E3_DRIVER_TYPE A4988
+#endif
+#if E_STEPPERS <= 4
+  #undef E4_DRIVER_TYPE
+#elif !defined(E4_DRIVER_TYPE)
+  #define E4_DRIVER_TYPE A4988
+#endif
+#if E_STEPPERS <= 5
+  #undef E5_DRIVER_TYPE
+#elif !defined(E5_DRIVER_TYPE)
+  #define E5_DRIVER_TYPE A4988
+#endif
+#if E_STEPPERS <= 6
+  #undef E6_DRIVER_TYPE
+#elif !defined(E6_DRIVER_TYPE)
+  #define E6_DRIVER_TYPE A4988
+#endif
+#if E_STEPPERS <= 7
+  #undef E7_DRIVER_TYPE
+#elif !defined(E7_DRIVER_TYPE)
+  #define E7_DRIVER_TYPE A4988
+#endif
+
+// Fallback axis inverting
+#ifndef INVERT_X_DIR
+  #define INVERT_X_DIR false
+#endif
+#ifndef INVERT_Y_DIR
+  #define INVERT_Y_DIR false
+#endif
+#ifndef INVERT_Z_DIR
+  #define INVERT_Z_DIR false
+#endif
+#ifndef INVERT_E_DIR
+  #define INVERT_E_DIR false
+#endif
+
+// Fallback SPI Speed
+#ifndef SPI_SPEED
+  #define SPI_SPEED SPI_FULL_SPEED
 #endif
 
 /**
