@@ -82,6 +82,9 @@
 #define X_STOP_PIN                            24
 #define Y_STOP_PIN                            26
 #define Z_STOP_PIN                            28
+#define I_STOP_PIN                            50
+#define J_STOP_PIN                            50
+//#define K_STOP_PIN                            50
 
 //
 // Steppers
@@ -97,6 +100,18 @@
 #define Z_STEP_PIN                            38
 #define Z_DIR_PIN                             37
 #define Z_ENABLE_PIN                          17
+
+#define I_STEP_PIN                            40
+#define I_DIR_PIN                             41
+#define I_ENABLE_PIN                          42
+
+#define J_STEP_PIN                            43
+#define J_DIR_PIN                             44
+#define J_ENABLE_PIN                          45
+
+//#define K_STEP_PIN                            28
+//#define K_DIR_PIN                             27
+//#define K_ENABLE_PIN                          31
 
 #define E0_STEP_PIN                           31
 #define E0_DIR_PIN                            30

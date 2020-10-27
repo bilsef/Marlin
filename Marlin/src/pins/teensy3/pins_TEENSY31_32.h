@@ -38,58 +38,73 @@
 //
 // Limit Switches
 //
-#define X_STOP_PIN                             3
-#define Y_STOP_PIN                             4
-#define Z_STOP_PIN                             5
+#define X_STOP_PIN                             2
+#define Y_STOP_PIN                             9
+#define Z_STOP_PIN                            13
+#define I_STOP_PIN                            33
+#define J_STOP_PIN                            33
+#define K_STOP_PIN                            33
 
 //
 // Steppers
 //
-#define X_STEP_PIN                             5
-#define X_DIR_PIN                              6
-#define X_ENABLE_PIN                           2
+#define X_STEP_PIN                            32
+#define X_DIR_PIN                             31
+#define X_ENABLE_PIN                          29
 
-#define Y_STEP_PIN                             7
-#define Y_DIR_PIN                              8
-#define Y_ENABLE_PIN                           2
+#define Y_STEP_PIN                            30
+#define Y_DIR_PIN                             29
+#define Y_ENABLE_PIN                          29
 
-#define Z_STEP_PIN                             9
-#define Z_DIR_PIN                             10
-#define Z_ENABLE_PIN                           2
+#define Z_STEP_PIN                            11
+#define Z_DIR_PIN                             14
+#define Z_ENABLE_PIN                          16
 
-#define E0_STEP_PIN                           11
-#define E0_DIR_PIN                            12
-#define E0_ENABLE_PIN                          2
+#define I_STEP_PIN                             4
+#define I_DIR_PIN                              3
+#define I_ENABLE_PIN                           5
 
-//#define E1_STEP_PIN                         33
-//#define E1_DIR_PIN                          34
-//#define E1_ENABLE_PIN                       35
+#define J_STEP_PIN                            11
+#define J_DIR_PIN                             10
+#define J_ENABLE_PIN                          12
+
+//#define K_STEP_PIN                            28
+//#define K_DIR_PIN                             27
+//#define K_ENABLE_PIN                          31
+
+#define E0_STEP_PIN                           26
+#define E0_DIR_PIN                            25
+#define E0_ENABLE_PIN                         24
+
+#define E1_STEP_PIN                           26
+#define E1_DIR_PIN                            25
+#define E1_ENABLE_PIN                         24
 
 //
 // Heaters / Fans
 //
-#define HEATER_0_PIN                          20
-//#define HEATER_1_PIN                        36
-#define HEATER_BED_PIN                        21
-#ifndef FAN_PIN
-  #define FAN_PIN                             22
-#endif
+#define HEATER_0_PIN                          27
+#define HEATER_1_PIN                          28
+//#define HEATER_BED_PIN                        21
+//#ifndef FAN_PIN
+//  #define FAN_PIN                             22
+//#endif
 
 //
 // Temperature Sensors
 //
-#define TEMP_0_PIN                            14  // Analog Input - Extruder 2 => A2
-//#define TEMP_1_PIN                           0  // Analog Input
-#define TEMP_BED_PIN                          15  // Analog Input - Bed
+#define TEMP_0_PIN                            6  // Analog Input - Extruder 2 => A2
+#define TEMP_1_PIN                            5  // Analog Input
+//#define TEMP_BED_PIN                          15  // Analog Input - Bed
 
-#ifndef FILWIDTH_PIN
-  #define FILWIDTH_PIN                         6  // Analog Input
-#endif
+//#ifndef FILWIDTH_PIN
+//  #define FILWIDTH_PIN                         6  // Analog Input
+//#endif
 
 //
 // Misc. Functions
 //
-#define LED_PIN                               13
+//#define LED_PIN                               13
 //#define SOL1_PIN                            28
 //#define SDSS                                16  // 8
 
